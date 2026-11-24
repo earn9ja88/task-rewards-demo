@@ -3,284 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EARN9JA | Earn More</title>
 
+<title>EARN9JA | Rewards Platform</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-  --green:#075b42;
-  --dark:#06432f;
-  --gold:#e9b949;
-  --light:#f4f7f5;
-  --white:#ffffff;
-  --text:#26352e;
-  --muted:#78877f;
-}
-
 * {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family:Arial,sans-serif;
-  background:var(--light);
-  color:var(--text);
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7f4;
+  color: #26352e;
 }
 
-button {
-  cursor:pointer;
-  border:0;
-  font-weight:bold;
-}
-
-header {
-  background:linear-gradient(135deg,var(--dark),var(--green));
-  color:white;
-  padding:22px;
-}
-
-.header-inner {
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.logo {
-  font-size:27px;
-  font-weight:900;
-  color:white;
-}
-
-.logo span {
-  color:var(--gold);
-}
-
-.tagline {
-  font-size:12px;
-  color:#d7e9df;
-  margin-top:5px;
-}
-
-.container {
-  max-width:1100px;
-  margin:auto;
-  padding:22px 15px 100px;
+:root {
+  --green: #075b42;
+  --dark: #06432f;
+  --gold: #e9b949;
 }
 
 .card {
-  background:white;
-  padding:20px;
-  border-radius:17px;
-  box-shadow:0 4px 18px rgba(0,0,0,.04);
-  border:1px solid #edf0ed;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 3px 15px rgba(0,0,0,.05);
+  margin-bottom: 18px;
 }
 
-.space {
-  margin-bottom:18px;
+input, textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dce5df;
+  border-radius: 10px;
+  margin: 7px 0;
+  font-size: 15px;
 }
 
-input,textarea {
-  width:100%;
-  padding:14px;
-  border:1px solid #dce5df;
-  border-radius:10px;
-  margin:7px 0;
-  font-size:15px;
-  outline:none;
-}
-
-input:focus,textarea:focus {
-  border-color:var(--green);
-}
-
-textarea {
-  min-height:90px;
+button {
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .primary {
-  background:var(--green);
-  color:white;
-  padding:14px;
-  border-radius:10px;
-  width:100%;
-  margin-top:10px;
+  background: var(--green);
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .secondary {
-  background:#e8f2ec;
-  color:var(--green);
-  padding:13px;
-  border-radius:10px;
-  width:100%;
-  margin-top:10px;
-}
-
-.gold {
-  color:var(--gold);
+  background: #e8f2ec;
+  color: var(--green);
+  padding: 14px;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .hidden {
-  display:none !important;
+  display: none !important;
+}
+
+header {
+  background: linear-gradient(135deg, #06432f, #08704e);
+  color: white;
+  padding: 23px;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: var(--gold);
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 20px 15px 40px;
 }
 
 .message {
-  padding:14px;
-  background:#e5f5eb;
-  color:#075b42;
-  border-radius:10px;
-  margin-bottom:15px;
-  display:none;
-  overflow-wrap:anywhere;
+  display: none;
+  padding: 14px;
+  border-radius: 10px;
+  background: #e5f5eb;
+  color: #075b42;
+  margin-bottom: 15px;
+  overflow-wrap: anywhere;
 }
 
 .hero {
-  background:linear-gradient(130deg,#06432f,#08704e);
-  border-radius:20px;
-  padding:25px;
-  color:white;
-  margin-bottom:20px;
-  position:relative;
-  overflow:hidden;
-}
-
-.hero:after {
-  content:"₦";
-  position:absolute;
-  right:20px;
-  top:0;
-  font-size:140px;
-  font-weight:bold;
-  color:rgba(255,255,255,.07);
-}
-
-.hero h2 {
-  font-size:23px;
-  margin-bottom:8px;
-}
-
-.hero p {
-  color:#d8e9df;
-  font-size:14px;
+  background: linear-gradient(135deg, #06432f, #08704e);
+  color: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 18px;
 }
 
 .balance {
-  font-size:34px;
-  font-weight:900;
-  margin:18px 0;
-  color:var(--gold);
-}
-
-.stats {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:13px;
-  margin-bottom:20px;
-}
-
-.stat {
-  background:white;
-  padding:18px;
-  border-radius:15px;
-  box-shadow:0 3px 12px rgba(0,0,0,.04);
-}
-
-.stat small {
-  color:var(--muted);
-}
-
-.stat h3 {
-  font-size:22px;
-  margin-top:9px;
-  color:var(--green);
+  color: var(--gold);
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 15px;
 }
 
 .section-title {
-  font-size:19px;
-  font-weight:800;
-  margin-bottom:16px;
+  color: var(--green);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .task {
-  border:1px solid #e8eee9;
-  padding:16px;
-  border-radius:13px;
-  margin-bottom:13px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.task h3 {
-  color:var(--green);
-  margin-bottom:8px;
+.task:last-child {
+  border: none;
 }
 
 .reward {
-  color:#a47712;
-  font-weight:bold;
-  margin:10px 0;
-}
-
-.task button {
-  background:var(--green);
-  color:white;
-  padding:11px 16px;
-  border-radius:9px;
+  color: #a47712;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
 .item {
-  padding:13px 0;
-  border-bottom:1px solid #edf0ed;
-  overflow-wrap:anywhere;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  overflow-wrap: anywhere;
 }
 
-.item:last-child {
-  border-bottom:0;
-}
-
-.admin-heading {
-  background:var(--dark);
-  color:white;
-  padding:20px;
-  border-radius:15px;
-}
-
-.bottom-nav {
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:white;
-  box-shadow:0 -3px 15px rgba(0,0,0,.08);
-  display:flex;
-  justify-content:space-around;
-  padding:12px 5px;
-  z-index:10;
-}
-
-.bottom-nav button {
-  background:none;
-  color:var(--green);
-  font-size:12px;
+.admin-title {
+  background: var(--dark);
+  color: white;
+  padding: 20px;
+  border-radius: 14px;
 }
 
 footer {
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  padding:25px;
+  text-align: center;
+  color: #78877f;
+  padding: 25px;
+  font-size: 12px;
 }
 
-@media(min-width:700px) {
-  .stats {
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .auth-card {
-    max-width:450px;
-    margin:35px auto;
+@media(min-width:650px) {
+  .container {
+    padding-top: 30px;
   }
 }
 </style>
@@ -289,12 +170,11 @@ footer {
 <body>
 
 <header>
-  <div class="header-inner">
-    <div>
-      <div class="logo">EARN<span>9JA</span></div>
-      <p class="tagline">Earn through verified micro-tasks</p>
-    </div>
-    <div class="gold">★ Rewards</div>
+  <div style="max-width:850px;margin:auto">
+    <div class="logo">EARN<span>9JA</span></div>
+    <p style="color:#d7e9df">
+      Earn through verified micro-tasks
+    </p>
   </div>
 </header>
 
@@ -302,21 +182,850 @@ footer {
 
 <div id="message" class="message"></div>
 
-<!-- AUTHENTICATION -->
+<!-- LOGIN AND REGISTRATION -->
 
-<section id="auth" class="card auth-card space">
+<section id="auth" class="card">
 
-<h2 style="color:var(--green);margin-bottom:8px">
+<h2 class="section-title">
 Welcome to EARN9JA
 </h2>
 
-<p style="color:var(--muted);margin-bottom:15px">
+<p style="color:#78877f;margin-bottom:15px">
 Your journey to earning rewards starts here.
 </p>
 
 <div id="registerFields">
-<input id="name" placeholder="Full name">
-<input id="phone" placeholder="Phone number">
+
+<input
+id="name"
+type="text"
+placeholder="Full name"
+autocomplete="name"
+>
+
+<input
+id="phone"
+type="tel"
+placeholder="Phone number"
+autocomplete="tel"
+>
+
 </div>
 
-<input id="email" type="email" placeholder
+<input
+id="email"
+type="email"
+placeholder="Email address"
+autocomplete="email"
+>
+
+<input
+id="password"
+type="password"
+placeholder="Password (minimum 8 characters)"
+autocomplete="current-password"
+>
+
+<button id="registerButton"
+class="primary"
+onclick="register()">
+Create Account
+</button>
+
+<button id="loginButton"
+class="secondary"
+onclick="login()">
+Login to Your Account
+</button>
+
+<p style="font-size:12px;color:#78877f;margin-top:15px">
+New accounts require email verification.
+</p>
+
+</section>
+
+<!-- MEMBER DASHBOARD -->
+
+<section id="dashboard" class="hidden">
+
+<div class="hero">
+
+<p>Welcome back!</p>
+
+<h2 id="welcome"
+style="font-size:24px;font-weight:bold;margin-top:8px">
+Member
+</h2>
+
+<p id="userEmail"
+style="margin-top:5px;color:#d7e9df">
+</p>
+
+<p style="margin-top:25px">
+My Wallet Balance
+</p>
+
+<div id="balance" class="balance">
+₦0.00
+</div>
+
+<p id="userRole"
+style="color:#e9b949;margin-top:10px">
+Registered Member
+</p>
+
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+🎯 Available Tasks
+</h2>
+
+<div id="tasks">
+Loading tasks...
+</div>
+
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+📋 My Submissions
+</h2>
+
+<div id="mySubmissions">
+Loading submissions...
+</div>
+
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+💰 Transaction History
+</h2>
+
+<div id="transactions">
+Loading transactions...
+</div>
+
+</div>
+
+<!-- ADMIN DASHBOARD -->
+
+<section id="adminPanel" class="hidden">
+
+<div class="admin-title card">
+<h2 style="font-size:22px;font-weight:bold">
+Administrator Dashboard
+</h2>
+<p>Manage EARN9JA</p>
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+Registered Members
+</h2>
+
+<div id="users">
+Loading members...
+</div>
+
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+Create New Task
+</h2>
+
+<input
+id="taskTitle"
+placeholder="Task title"
+>
+
+<textarea
+id="taskDescription"
+placeholder="Task description"
+></textarea>
+
+<input
+id="taskReward"
+type="number"
+min="1"
+placeholder="Reward in Naira"
+>
+
+<button class="primary" onclick="createTask()">
+Publish Task
+</button>
+
+</div>
+
+<div class="card">
+
+<h2 class="section-title">
+Task Submissions
+</h2>
+
+<div id="adminSubmissions">
+Loading submissions...
+</div>
+
+</div>
+
+</section>
+
+<button class="primary"
+style="background:#c0392b"
+onclick="logout()">
+Logout
+</button>
+
+</section>
+
+</main>
+
+<footer>
+EARN9JA © 2026 | Earn. Complete Tasks. Get Rewarded.
+</footer>
+
+<script>
+
+// SUPABASE CONNECTION
+
+const SUPABASE_URL =
+"https://asvehrxwdwiprwucflyi.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_R4Rpfpob7uVyDXrJp5BDNQ_gjblP8M1";
+
+const db = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+let currentUser = null;
+let currentProfile = null;
+
+// MESSAGE
+
+function message(text) {
+const box = document.getElementById("message");
+
+box.textContent = text;
+box.style.display = "block";
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+}
+
+// HTML PROTECTION
+
+function escapeHTML(value) {
+return String(value ?? "").replace(/[&<>"']/g, c => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+})[c]);
+}
+
+// REGISTRATION
+
+async function register() {
+
+try {
+
+const name =
+document.getElementById("name").value.trim();
+
+const phone =
+document.getElementById("phone").value.trim();
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+if (!name || !email || password.length < 8) {
+return message(
+"Enter your full name, email and a password of at least 8 characters."
+);
+}
+
+const button =
+document.getElementById("registerButton");
+
+button.disabled = true;
+button.textContent = "Creating account...";
+
+const {data,error} = await db.auth.signUp({
+
+email,
+password,
+
+options: {
+
+emailRedirectTo:
+"https://earn9ja88.github.io/task-rewards-demo/",
+
+data: {
+full_name: name,
+phone: phone
+}
+
+}
+
+});
+
+if (error) throw error;
+
+message(
+data.session
+? "Account created successfully! You can now continue."
+: "Registration successful! Please check your email to verify your account."
+);
+
+} catch(error) {
+
+message("Registration failed: " + error.message);
+
+} finally {
+
+const button =
+document.getElementById("registerButton");
+
+button.disabled = false;
+button.textContent = "Create Account";
+
+}
+
+}
+
+// LOGIN
+
+async function login() {
+
+try {
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+if (!email || !password) {
+return message("Enter your email and password.");
+}
+
+const button =
+document.getElementById("loginButton");
+
+button.disabled = true;
+button.textContent = "Logging in...";
+
+const {data,error} = await db.auth.signInWithPassword({
+
+email,
+password
+
+});
+
+if (error) throw error;
+
+await loadDashboard(data.user);
+
+} catch(error) {
+
+message("Login failed: " + error.message);
+
+} finally {
+
+const button =
+document.getElementById("loginButton");
+
+button.disabled = false;
+button.textContent = "Login to Your Account";
+
+}
+
+}
+
+// LOGOUT
+
+async function logout() {
+
+await db.auth.signOut();
+
+location.reload();
+
+}
+
+// LOAD DASHBOARD
+
+async function loadDashboard(user) {
+
+currentUser = user;
+
+const {data:profile,error} = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",user.id)
+
+.single();
+
+if (error) {
+
+message("Profile loading failed: " + error.message);
+
+return;
+
+}
+
+currentProfile = profile;
+
+document.getElementById("auth")
+.classList.add("hidden");
+
+document.getElementById("dashboard")
+.classList.remove("hidden");
+
+document.getElementById("welcome").textContent =
+profile.full_name || user.email;
+
+document.getElementById("userEmail").textContent =
+user.email;
+
+document.getElementById("userRole").textContent =
+profile.role === "admin"
+? "Administrator"
+: "Registered Member";
+
+if (profile.role === "admin") {
+
+document.getElementById("adminPanel")
+.classList.remove("hidden");
+
+await loadUsers();
+
+await loadAdminSubmissions();
+
+}
+
+await loadTasks();
+
+await loadMySubmissions();
+
+await loadTransactions();
+
+}
+
+// LOAD TASKS
+
+async function loadTasks() {
+
+const box =
+document.getElementById("tasks");
+
+const {data,error} = await db
+
+.from("tasks")
+
+.select("*")
+
+.eq("status","active")
+
+.order("created_at",{ascending:false});
+
+if (error) {
+
+box.textContent = error.message;
+
+return;
+
+}
+
+box.innerHTML = data.length
+
+? data.map(task => `
+
+<div class="task">
+
+<h3 style="font-weight:bold;color:#075b42">
+${escapeHTML(task.title)}
+</h3>
+
+<p style="margin-top:8px">
+${escapeHTML(task.description)}
+</p>
+
+<p class="reward">
+Reward: ₦${Number(task.reward).toLocaleString("en-NG")}
+</p>
+
+<button
+class="primary"
+style="width:auto"
+onclick="submitTask(${Number(task.id)})">
+Submit Task
+</button>
+
+</div>
+
+`).join("")
+
+: "No tasks available at the moment.";
+
+}
+
+// SUBMIT TASK
+
+async function submitTask(id) {
+
+const proof = prompt(
+"Enter your task completion details:"
+);
+
+if (!proof || !proof.trim()) return;
+
+const {error} = await db
+
+.from("task_submissions")
+
+.insert({
+
+user_id: currentUser.id,
+
+task_id: id,
+
+proof: proof.trim()
+
+});
+
+if (error) {
+
+return message(
+"Submission failed: " + error.message
+);
+
+}
+
+message("Task submitted successfully for review.");
+
+await loadMySubmissions();
+
+}
+
+// MY SUBMISSIONS
+
+async function loadMySubmissions() {
+
+const box =
+document.getElementById("mySubmissions");
+
+const {data,error} = await db
+
+.from("task_submissions")
+
+.select("id,proof,status")
+
+.eq("user_id",currentUser.id)
+
+.order("id",{ascending:false});
+
+if (error) {
+
+box.textContent = error.message;
+
+return;
+
+}
+
+box.innerHTML = data.length
+
+? data.map(s => `
+
+<div class="item">
+
+<strong>Submission #${s.id}</strong>
+
+<p style="margin-top:6px">
+${escapeHTML(s.proof)}
+</p>
+
+<p style="color:#075b42;font-weight:bold;margin-top:6px">
+Status: ${escapeHTML(s.status)}
+</p>
+
+</div>
+
+`).join("")
+
+: "No submissions yet.";
+
+}
+
+// TRANSACTION HISTORY
+
+async function loadTransactions() {
+
+const box =
+document.getElementById("transactions");
+
+const {data,error} = await db
+
+.from("transactions")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.order("created_at",{ascending:false});
+
+if (error) {
+
+box.textContent = error.message;
+
+return;
+
+}
+
+let balance = 0;
+
+data.forEach(t => {
+
+balance += t.transaction_type === "credit"
+
+? Number(t.amount)
+
+: -Number(t.amount);
+
+});
+
+document.getElementById("balance").textContent =
+
+"₦" + balance.toLocaleString("en-NG",{
+
+minimumFractionDigits:2
+
+});
+
+box.innerHTML = data.length
+
+? data.map(t => `
+
+<div class="item">
+
+<strong>
+${escapeHTML(t.description)}
+</strong>
+
+<p style="color:#075b42;margin-top:5px">
+
+${t.transaction_type === "credit" ? "+" : "-"}
+
+₦${Number(t.amount).toLocaleString("en-NG")}
+
+</p>
+
+</div>
+
+`).join("")
+
+: "No transactions yet.";
+
+}
+
+// ADMIN: REGISTERED MEMBERS
+
+async function loadUsers() {
+
+const box =
+document.getElementById("users");
+
+const {data,error} = await db
+
+.from("profiles")
+
+.select("id,full_name,role,created_at")
+
+.order("created_at",{ascending:false});
+
+if (error) {
+
+box.textContent = error.message;
+
+return;
+
+}
+
+box.innerHTML = data.length
+
+? data.map(u => `
+
+<div class="item">
+
+<strong>${escapeHTML(u.full_name)}</strong>
+
+<p>${escapeHTML(u.role)}</p>
+
+</div>
+
+`).join("")
+
+: "No registered members.";
+
+}
+
+// ADMIN: CREATE TASK
+
+async function createTask() {
+
+if (currentProfile?.role !== "admin") {
+
+return message("Administrator access required.");
+
+}
+
+const title =
+document.getElementById("taskTitle").value.trim();
+
+const description =
+document.getElementById("taskDescription").value.trim();
+
+const reward =
+Number(document.getElementById("taskReward").value);
+
+if (
+!title ||
+!description ||
+!Number.isFinite(reward) ||
+reward <= 0
+) {
+
+return message("Enter valid task details and reward.");
+
+}
+
+const {error} = await db
+
+.from("tasks")
+
+.insert({
+
+title,
+description,
+reward,
+status: "active"
+
+});
+
+if (error) {
+
+return message(
+"Task creation failed: " + error.message
+);
+
+}
+
+document.getElementById("taskTitle").value = "";
+
+document.getElementById("taskDescription").value = "";
+
+document.getElementById("taskReward").value = "";
+
+message("Task published successfully.");
+
+await loadTasks();
+
+}
+
+// ADMIN: ALL SUBMISSIONS
+
+async function loadAdminSubmissions() {
+
+const box =
+document.getElementById("adminSubmissions");
+
+const {data,error} = await db
+
+.from("task_submissions")
+
+.select("*")
+
+.order("id",{ascending:false});
+
+if (error) {
+
+box.textContent = error.message;
+
+return;
+
+}
+
+box.innerHTML = data.length
+
+? data.map(s => `
+
+<div class="item">
+
+<strong>Submission #${s.id}</strong>
+
+<p style="margin-top:6px">
+User ID: ${escapeHTML(s.user_id)}
+</p>
+
+<p>${escapeHTML(s.proof)}</p>
+
+<p style="color:#075b42">
+Status: ${escapeHTML(s.status)}
+</p>
+
+</div>
+
+`).join("")
+
+: "No submissions yet.";
+
+}
+
+// INITIALIZE WEBSITE
+
+async function initialize() {
+
+try {
+
+const {data,error} = await db.auth.getSession();
+
+if (error) throw error;
+
+if (data.session) {
+
+await loadDashboard(data.session.user);
+
+}
+
+} catch(error) {
+
+message("Connection error: " + error.message);
+
+}
+
+}
+
+initialize();
+
+</script>
+
+</body>
+  </html>
