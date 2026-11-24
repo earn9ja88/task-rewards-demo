@@ -2,463 +2,303 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EARN9JA | Task & Rewards</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EARN9JA | Rewards Platform</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f7f5}
-.green{background:#075c43}
-.gold{color:#eabf58}
-.card{background:white;border-radius:16px;border:1px solid #e5e7eb}
-button{transition:.2s}
-button:active{transform:scale(.98)}
-.page{display:none}
-.page.active{display:block}
-input{outline:none}
+body{font-family:Arial,sans-serif}
+.card{background:white;border:1px solid #e5e7eb;border-radius:16px;padding:18px}
+button{cursor:pointer}
 </style>
 </head>
 
-<body class="text-gray-800">
+<body class="bg-gray-100 text-gray-900">
 
-<div id="auth" class="min-h-screen flex items-center justify-center p-5">
- <div class="card p-6 w-full max-w-sm shadow-lg">
-  <div class="text-center mb-6">
-   <div class="green text-white w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-xl font-black">E9</div>
-   <h1 class="text-2xl font-black mt-3">EARN<span class="gold">9JA</span></h1>
-   <p class="text-xs text-gray-500">TASK & REWARDS DEMO PLATFORM</p>
-  </div>
-
-  <h2 id="authTitle" class="font-bold text-lg mb-4">Welcome Back</h2>
-
-  <div id="registerFields" class="hidden space-y-3 mb-3">
-   <input id="name" placeholder="Full name" class="w-full border p-3 rounded-lg">
-   <input id="phone" placeholder="Phone number" class="w-full border p-3 rounded-lg">
-  </div>
-
-  <div class="space-y-3">
-   <input id="email" type="email" placeholder="Email address" class="w-full border p-3 rounded-lg">
-   <input id="password" type="password" placeholder="Password" class="w-full border p-3 rounded-lg">
-  </div>
-
-  <button onclick="authenticate()" id="authButton" class="green text-white w-full p-3 rounded-lg font-bold mt-4">Login</button>
-
-  <p class="text-center text-sm mt-4">
-   <span id="authQuestion">Don't have an account?</span>
-   <button onclick="toggleAuth()" id="authToggle" class="text-emerald-700 font-bold">Register</button>
-  </p>
-  <p id="authError" class="text-red-600 text-xs mt-3"></p>
-  <p class="text-center text-xs text-gray-400 mt-5">DEMO ONLY — NO REAL MONEY PAYMENTS</p>
- </div>
-</div>
-
-<div id="app" class="hidden max-w-md mx-auto min-h-screen bg-white shadow-xl pb-24">
-
-<header class="green text-white p-5 rounded-b-3xl">
- <div class="flex justify-between items-center">
-  <div>
-   <h1 class="text-xl font-black">EARN<span class="gold">9JA</span></h1>
-   <p class="text-xs text-emerald-100">Task & Rewards Platform</p>
-  </div>
-  <button onclick="logout()" class="bg-white/20 px-3 py-2 rounded-lg text-xs">Logout</button>
- </div>
-
- <div class="mt-6 bg-white/10 border border-white/20 rounded-2xl p-4">
-  <p class="text-xs text-emerald-100">Available Demo Balance</p>
-  <h2 class="text-3xl font-black mt-2">₦<span id="balance">0.00</span></h2>
-  <div class="flex justify-between mt-4 text-xs">
-   <span>Account: <b id="accountName">User</b></span>
-   <span class="gold">DEMO ACCOUNT</span>
-  </div>
- </div>
+<header class="bg-emerald-800 text-white p-5">
+<h1 class="text-2xl font-bold">EARN9JA</h1>
+<p class="text-sm text-emerald-100">Earn through verified micro-tasks</p>
 </header>
 
-<div class="p-4">
+<main class="max-w-lg mx-auto p-4 space-y-4">
 
-<div id="notice" class="hidden bg-emerald-50 text-emerald-800 p-3 rounded-xl text-xs mb-4"></div>
+<div id="message" class="hidden bg-emerald-100 text-emerald-900 p-3 rounded-lg"></div>
 
-<section id="home" class="page active space-y-4">
+<!-- AUTHENTICATION -->
 
- <div class="grid grid-cols-2 gap-3">
-  <div class="card p-4">
-   <p class="text-xs text-gray-500">Total Earned</p>
-   <h3 class="text-xl font-bold text-emerald-700">₦<span id="total">0.00</span></h3>
-  </div>
-  <div class="card p-4">
-   <p class="text-xs text-gray-500">Completed Tasks</p>
-   <h3 class="text-xl font-bold" id="completed">0</h3>
-  </div>
-  <div class="card p-4">
-   <p class="text-xs text-gray-500">Referral Bonus</p>
-   <h3 class="text-xl font-bold text-emerald-700">₦<span id="referrals">0.00</span></h3>
-  </div>
-  <div class="card p-4">
-   <p class="text-xs text-gray-500">Account Tier</p>
-   <h3 class="text-xl font-bold gold" id="tier">Tier 1</h3>
-  </div>
- </div>
+<section id="auth" class="card space-y-3">
+<h2 class="text-xl font-bold">Welcome to EARN9JA</h2>
 
- <div class="card p-4">
-  <h3 class="font-bold mb-3">Quick Actions</h3>
-  <div class="grid grid-cols-3 gap-2 text-center text-xs">
-   <button onclick="showPage('tasks')" class="bg-emerald-50 p-3 rounded-xl">💼<br>Tasks</button>
-   <button onclick="showPage('withdraw')" class="bg-emerald-50 p-3 rounded-xl">⇄<br>Withdraw</button>
-   <button onclick="showPage('referral')" class="bg-emerald-50 p-3 rounded-xl">👥<br>Invite</button>
-  </div>
- </div>
+<div id="registerFields">
+<input id="name" placeholder="Full name"
+class="w-full border p-3 rounded-lg mb-2">
 
- <div class="card p-4">
-  <h3 class="font-bold mb-2">Welcome to EARN9JA!</h3>
-  <p class="text-xs text-gray-500 leading-6">
-   Explore sample tasks, earn simulated rewards and experience our demo referral and wallet system.
-  </p>
- </div>
-
-</section>
-
-<section id="tasks" class="page space-y-3">
- <h2 class="font-bold text-lg">Available Tasks</h2>
- <div id="taskList"></div>
-</section>
-
-<section id="withdraw" class="page space-y-4">
- <h2 class="font-bold text-lg">Demo Withdrawal</h2>
- <div class="card p-4 space-y-3">
-  <p class="text-xs text-gray-500">Available balance: ₦<span id="withdrawBalance">0.00</span></p>
-  <input id="amount" type="number" min="1" placeholder="Enter amount" class="w-full border rounded-lg p-3">
-  <select id="bank" class="w-full border rounded-lg p-3">
-   <option value="">Select bank (demo)</option>
-   <option>Access Bank</option>
-   <option>GTBank</option>
-   <option>UBA</option>
-   <option>Zenith Bank</option>
-   <option>First Bank</option>
-   <option>Opay</option>
-   <option>Palmpay</option>
-  </select>
-  <input id="accountNumber" maxlength="10" placeholder="Account number (demo)" class="w-full border rounded-lg p-3">
-  <button onclick="withdraw()" class="green text-white w-full p-3 rounded-lg font-bold">Simulate Withdrawal</button>
-  <p class="text-xs text-orange-600">This is a simulation. No bank transfer will occur.</p>
- </div>
-</section>
-
-<section id="referral" class="page space-y-4">
- <h2 class="font-bold text-lg">Referral Centre</h2>
- <div class="card p-5 text-center">
-  <p class="text-sm text-gray-500">Your Demo Referral Code</p>
-  <h2 class="text-3xl font-black gold my-4" id="refCode">EARN9JA</h2>
-  <button onclick="copyReferral()" class="green text-white px-6 py-3 rounded-lg">Copy Code</button>
-  <p class="text-xs text-gray-500 mt-4">Referral rewards are simulated for demonstration purposes.</p>
- </div>
-</section>
-
-<section id="history" class="page space-y-3">
- <h2 class="font-bold text-lg">Transaction History</h2>
- <div id="historyList" class="space-y-2"></div>
-</section>
-
-<section id="profile" class="page space-y-3">
- <h2 class="font-bold text-lg">My Profile</h2>
- <div class="card p-4 space-y-3 text-sm">
-  <p>Full Name: <b id="profileName"></b></p>
-  <p>Email: <b id="profileEmail"></b></p>
-  <p>Phone: <b id="profilePhone"></b></p>
-  <p>Account Type: <b>Demo User</b></p>
-  <button onclick="logout()" class="bg-red-50 text-red-600 w-full p-3 rounded-lg">Sign Out</button>
- </div>
-</section>
-
-<section id="admin" class="page space-y-3">
- <h2 class="font-bold text-lg">Demo Admin Panel</h2>
- <div class="card p-4 space-y-3">
-  <p class="text-xs text-orange-600">Local demonstration only. Not a secure administrator system.</p>
-  <input id="newTaskTitle" placeholder="Task title" class="w-full border rounded-lg p-3">
-  <input id="newTaskReward" type="number" placeholder="Reward amount" class="w-full border rounded-lg p-3">
-  <button onclick="addTask()" class="green text-white w-full p-3 rounded-lg">Add Sample Task</button>
-  <div id="adminTasks"></div>
- </div>
-</section>
-
+<input id="phone" placeholder="Phone number"
+class="w-full border p-3 rounded-lg">
 </div>
 
-<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t p-3 grid grid-cols-5 text-center text-xs z-40">
- <button onclick="showPage('home')">🏠<br>Home</button>
- <button onclick="showPage('tasks')">💼<br>Tasks</button>
- <button onclick="showPage('history')">📒<br>History</button>
- <button onclick="showPage('referral')">👥<br>Referral</button>
- <button onclick="showPage('profile')">👤<br>Profile</button>
-</nav>
+<input id="email" type="email" placeholder="Email address"
+class="w-full border p-3 rounded-lg">
 
+<input id="password" type="password" placeholder="Password"
+class="w-full border p-3 rounded-lg">
+
+<button onclick="register()" id="registerBtn"
+class="w-full bg-emerald-700 text-white p-3 rounded-lg font-bold">
+Create Account
+</button>
+
+<button onclick="login()"
+class="w-full border border-emerald-700 text-emerald-800 p-3 rounded-lg">
+Login
+</button>
+
+<p class="text-xs text-gray-500">
+Registration requires email verification.
+</p>
+</section>
+
+<!-- USER DASHBOARD -->
+
+<section id="dashboard" class="hidden space-y-4">
+
+<div class="card">
+<p class="text-sm text-gray-500">Welcome back</p>
+<h2 id="welcome" class="text-xl font-bold">User</h2>
+<p id="userEmail" class="text-sm text-gray-500"></p>
+<span id="userRole" class="text-xs text-emerald-700"></span>
 </div>
+
+<div class="card">
+<h3 class="font-bold">Account Overview</h3>
+<p class="text-sm text-gray-500 mt-2">Transaction balance</p>
+<h2 id="balance" class="text-3xl font-bold text-emerald-700">
+₦0.00
+</h2>
+<p class="text-xs text-gray-500 mt-2">
+Your displayed balance is calculated from recorded transactions.
+</p>
+</div>
+
+<div class="card space-y-3">
+<h3 class="font-bold text-lg">Available Tasks</h3>
+<div id="tasks">Loading tasks...</div>
+</div>
+
+<div class="card">
+<h3 class="font-bold mb-3">My Task Submissions</h3>
+<div id="mySubmissions">Loading...</div>
+</div>
+
+<div class="card">
+<h3 class="font-bold mb-3">Transaction History</h3>
+<div id="transactions">Loading...</div>
+</div>
+
+<!-- ADMIN AREA -->
+
+<section id="adminPanel" class="hidden space-y-4">
+
+<div class="bg-emerald-900 text-white p-4 rounded-xl">
+<h2 class="text-xl font-bold">Administrator Dashboard</h2>
+<p class="text-sm">EARN9JA management centre</p>
+</div>
+
+<div class="card">
+<h3 class="font-bold mb-3">Registered Users</h3>
+<div id="users">Loading users...</div>
+</div>
+
+<div class="card space-y-3">
+<h3 class="font-bold">Create New Task</h3>
+
+<input id="taskTitle" placeholder="Task title"
+class="w-full border p-3 rounded-lg">
+
+<textarea id="taskDescription" placeholder="Task description"
+class="w-full border p-3 rounded-lg"></textarea>
+
+<input id="taskReward" type="number" min="0"
+placeholder="Reward in Naira"
+class="w-full border p-3 rounded-lg">
+
+<button onclick="createTask()"
+class="w-full bg-emerald-700 text-white p-3 rounded-lg">
+Publish Task
+</button>
+</div>
+
+<div class="card">
+<h3 class="font-bold mb-3">Task Submissions</h3>
+<div id="adminSubmissions">Loading submissions...</div>
+</div>
+
+</section>
+
+<button onclick="logout()"
+class="w-full bg-red-600 text-white p-3 rounded-lg">
+Logout
+</button>
+
+</section>
+
+</main>
+
+<footer class="text-center text-xs text-gray-500 p-6">
+EARN9JA © 2026 | Micro-task platform
+</footer>
 
 <script>
-const KEY="earn9ja_demo_v1";
+const SUPABASE_URL =
+"https://asvehrxwdwiprwucflyi.supabase.co";
 
-let db=JSON.parse(localStorage.getItem(KEY)||"null");
+const SUPABASE_KEY =
+"sb_publishable_fsi2QXuydZh_w74vRFGRXw_e9HWicNy";
 
-let isRegister=false;
+const db = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-let defaultTasks=[
- {id:1,title:"Sample App Testing",description:"Explore a sample application and provide feedback.",reward:1200},
- {id:2,title:"Product Listing Review",description:"Review sample product descriptions for accuracy.",reward:950},
- {id:3,title:"Data Categorisation",description:"Categorise 20 sample customer support messages.",reward:1500},
- {id:4,title:"Website Usability Review",description:"Review a sample website and submit observations.",reward:800}
-];
+let currentUser = null;
+let currentProfile = null;
 
-let tasks=JSON.parse(localStorage.getItem("earn9ja_tasks")||"null")||defaultTasks;
-
-function save(){
- localStorage.setItem(KEY,JSON.stringify(db));
- localStorage.setItem("earn9ja_tasks",JSON.stringify(tasks));
+function message(text) {
+const el = document.getElementById("message");
+el.textContent = text;
+el.classList.remove("hidden");
 }
 
-function money(n){
- return Number(n).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+async function register() {
+const name = document.getElementById("name").value.trim();
+const phone = document.getElementById("phone").value.trim();
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+
+if (!name || !email || password.length < 8) {
+return message("Enter your name, email and a password of at least 8 characters.");
 }
 
-function message(msg){
- const el=document.getElementById("notice");
- el.textContent=msg;
- el.classList.remove("hidden");
- setTimeout(()=>el.classList.add("hidden"),4000);
+const {error} = await db.auth.signUp({
+email,
+password,
+options: {
+emailRedirectTo: location.origin,
+data: {
+full_name: name,
+phone: phone
+}
+}
+});
+
+if (error) return message(error.message);
+
+message("Registration successful! Check your email to verify your account.");
 }
 
-function toggleAuth(){
- isRegister=!isRegister;
- document.getElementById("registerFields").classList.toggle("hidden",!isRegister);
- document.getElementById("authTitle").textContent=isRegister?"Create Demo Account":"Welcome Back";
- document.getElementById("authButton").textContent=isRegister?"Create Account":"Login";
- document.getElementById("authQuestion").textContent=isRegister?"Already have an account?":"Don't have an account?";
- document.getElementById("authToggle").textContent=isRegister?"Login":"Register";
- document.getElementById("authError").textContent="";
+async function login() {
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+
+const {data,error} = await db.auth.signInWithPassword({
+email,password
+});
+
+if (error) return message(error.message);
+
+await loadDashboard(data.user);
 }
 
-function authenticate(){
- const email=document.getElementById("email").value.trim().toLowerCase();
- const password=document.getElementById("password").value;
- const error=document.getElementById("authError");
-
- if(!email||password.length<4){
-  error.textContent="Enter a valid email and a password of at least 4 characters.";
-  return;
- }
-
- if(isRegister){
-  const name=document.getElementById("name").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  if(!name||!phone){
-   error.textContent="Please enter your name and phone number.";
-   return;
-  }
-  if(localStorage.getItem("earn9ja_user_"+email)){
-   error.textContent="This demo email is already registered.";
-   return;
-  }
-
-  db={
-   name,email,phone,password,
-   balance:0,total:0,completed:0,referrals:0,
-   transactions:[]
-  };
-  localStorage.setItem("earn9ja_user_"+email,JSON.stringify(db));
- }else{
-  const saved=localStorage.getItem("earn9ja_user_"+email);
-  if(!saved){
-   error.textContent="Demo account not found. Please register first.";
-   return;
-  }
-  const user=JSON.parse(saved);
-  if(user.password!==password){
-   error.textContent="Incorrect demo password.";
-   return;
-  }
-  db=user;
- }
-
- localStorage.setItem(KEY,JSON.stringify(db));
- openApp();
+async function logout() {
+await db.auth.signOut();
+location.reload();
 }
 
-function openApp(){
- if(!db)return;
- document.getElementById("auth").classList.add("hidden");
- document.getElementById("app").classList.remove("hidden");
- render();
+async function loadDashboard(user) {
+currentUser = user;
+
+const {data:profile,error} = await db
+.from("profiles")
+.select("*")
+.eq("id",user.id)
+.single();
+
+if (error) {
+return message("Could not load your profile: " + error.message);
 }
 
-function logout(){
- if(db){
-  localStorage.setItem("earn9ja_user_"+db.email,JSON.stringify(db));
- }
- db=null;
- document.getElementById("app").classList.add("hidden");
- document.getElementById("auth").classList.remove("hidden");
+currentProfile = profile;
+
+document.getElementById("auth").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+
+document.getElementById("welcome").textContent =
+profile.full_name || user.email;
+
+document.getElementById("userEmail").textContent = user.email;
+
+document.getElementById("userRole").textContent =
+profile.role === "admin" ? "Administrator" : "Registered Member";
+
+if (profile.role === "admin") {
+document.getElementById("adminPanel").classList.remove("hidden");
+await loadUsers();
+await loadAdminSubmissions();
 }
 
-function render(){
- if(!db)return;
-
- document.getElementById("balance").textContent=money(db.balance);
- document.getElementById("total").textContent=money(db.total);
- document.getElementById("completed").textContent=db.completed;
- document.getElementById("referrals").textContent=money(db.referrals);
- document.getElementById("tier").textContent=db.completed>=15?"Tier 3":db.completed>=5?"Tier 2":"Tier 1";
- document.getElementById("accountName").textContent=db.name;
- document.getElementById("profileName").textContent=db.name;
- document.getElementById("profileEmail").textContent=db.email;
- document.getElementById("profilePhone").textContent=db.phone;
- document.getElementById("withdrawBalance").textContent=money(db.balance);
- document.getElementById("refCode").textContent="E9-"+db.email.split("@")[0].toUpperCase().slice(0,10);
-
- renderTasks();
- renderHistory();
- renderAdmin();
- save();
+await loadTasks();
+await loadTransactions();
+await loadMySubmissions();
 }
 
-function renderTasks(){
- const done=db.transactions.filter(x=>x.taskId).map(x=>x.taskId);
- document.getElementById("taskList").innerHTML=tasks.map(t=>{
- const completed=done.includes(t.id);
- return `<div class="card p-4 mb-3">
-  <div class="flex justify-between gap-2">
-   <div>
-    <h3 class="font-bold">${escapeHTML(t.title)}</h3>
-    <p class="text-xs text-gray-500 mt-2">${escapeHTML(t.description||"Sample demonstration task.")}</p>
-   </div>
-   <span class="text-emerald-700 font-bold whitespace-nowrap">₦${money(t.reward)}</span>
-  </div>
-  <button ${completed?"disabled":""} onclick="completeTask(${t.id})" class="w-full mt-4 p-3 rounded-lg ${completed?"bg-gray-200 text-gray-500":"green text-white"}">
-   ${completed?"Completed":"Complete Demo Task"}
-  </button>
- </div>`;
- }).join("");
+async function loadTasks() {
+const box = document.getElementById("tasks");
+
+const {data,error} = await db
+.from("tasks")
+.select("*")
+.eq("status","active")
+.order("created_at",{ascending:false});
+
+if (error) {
+box.textContent = error.message;
+return;
 }
 
-function completeTask(id){
- const task=tasks.find(t=>t.id===id);
- if(!task)return;
-
- if(db.transactions.some(x=>x.taskId===id)){
-  message("You have already completed this demo task.");
-  return;
- }
-
- db.balance+=Number(task.reward);
- db.total+=Number(task.reward);
- db.completed++;
-
- db.transactions.unshift({
-  label:"Demo Task: "+task.title,
-  amount:Number(task.reward),
-  taskId:id,
-  date:new Date().toLocaleString()
- });
-
- save();
- render();
- message("Demo reward of ₦"+money(task.reward)+" credited!");
+if (!data.length) {
+box.textContent = "No tasks available at the moment.";
+return;
 }
 
-function withdraw(){
- const amount=Number(document.getElementById("amount").value);
- const bank=document.getElementById("bank").value;
- const account=document.getElementById("accountNumber").value.trim();
-
- if(!amount||amount<=0)return message("Enter a valid amount.");
- if(amount>db.balance)return message("Insufficient demo balance.");
- if(!bank)return message("Select a demo bank.");
- if(!/^[0-9]{10}$/.test(account))return message("Enter a 10-digit demo account number.");
-
- db.balance-=amount;
- db.transactions.unshift({
-  label:"Simulated withdrawal - "+bank,
-  amount:-amount,
-  date:new Date().toLocaleString()
- });
-
- document.getElementById("amount").value="";
- document.getElementById("accountNumber").value="";
-
- save();
- render();
- message("Demo withdrawal recorded. No real transfer was made.");
+box.innerHTML = data.map(task => `
+<div class="border-b py-3 space-y-2">
+<h4 class="font-bold">${escapeHTML(task.title)}</h4>
+<p class="text-sm text-gray-600">${escapeHTML(task.description || "")}</p>
+<p class="text-emerald-700 font-bold">
+Reward: ₦${Number(task.reward).toLocaleString()}
+</p>
+<button onclick="submitTask(${task.id})"
+class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
+Submit Task
+</button>
+</div>
+`).join("");
 }
 
-function renderHistory(){
- document.getElementById("historyList").innerHTML=db.transactions.length?
- db.transactions.map(t=>`
- <div class="card p-3 flex justify-between items-center gap-2">
-  <div><p class="text-sm font-bold">${escapeHTML(t.label)}</p><p class="text-xs text-gray-400">${escapeHTML(t.date)}</p></div>
-  <b class="${t.amount>=0?"text-emerald-700":"text-red-600"} whitespace-nowrap">${t.amount>=0?"+":"-"}₦${money(Math.abs(t.amount))}</b>
- </div>`).join(""):'<p class="text-sm text-gray-400">No demo transactions yet.</p>';
-}
+async function submitTask(id) {
+const proof = prompt("Enter your task completion details or proof:");
 
-function copyReferral(){
- const code=document.getElementById("refCode").textContent;
- if(navigator.clipboard){
-  navigator.clipboard.writeText(code).then(()=>message("Referral code copied."));
- }else{
-  message("Your referral code is "+code);
- }
-}
+if (!proof || !proof.trim()) return;
 
-function showPage(page){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(page).classList.add("active");
- if(page==="admin")renderAdmin();
- window.scrollTo(0,0);
-}
+const {error} = await db
+.from("task_submissions")
+.insert({
+user_id:currentUser.id,
+task_id:id,
+proof:proof.trim()
+});
 
-function addTask(){
- const title=document.getElementById("newTaskTitle").value.trim();
- const reward=Number(document.getElementById("newTaskReward").value);
+if (error) return message(error.message);
 
- if(!title||reward<=0)return message("Enter a task title and valid reward.");
-
- tasks.push({
-  id:Date.now(),
-  title,
-  description:"Administrator-created sample task.",
-  reward
- });
-
- save();
- renderTasks();
- renderAdmin();
-
- document.getElementById("newTaskTitle").value="";
- document.getElementById("newTaskReward").value="";
- message("Sample task added.");
-}
-
-function renderAdmin(){
- const el=document.getElementById("adminTasks");
- if(!el)return;
- el.innerHTML=tasks.map(t=>`
- <div class="border-b py-2 flex justify-between text-xs gap-2">
-  <span>${escapeHTML(t.title)} — ₦${money(t.reward)}</span>
-  <button onclick="deleteTask(${t.id})" class="text-red-600">Delete</button>
- </div>`).join("");
-}
-
-function deleteTask(id){
- tasks=tasks.filter(t=>t.id!==id);
- save();
- renderTasks();
- renderAdmin();
- message("Sample task removed.");
-}
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-if(db){
- openApp();
-}
-</script>
-
-</body>
-</html>
+message("Task submitted for administrator review.");
+await loadMySubmissions();
