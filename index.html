@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>EARN9JA | Earn Rewards</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>EARN9JA | Earn Rewards</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root {
   --green:#075b42;
   --dark:#043d2c;
@@ -18,7 +11,9 @@
   --muted:#82918a;
 }
 
-* { box-sizing:border-box; }
+* {
+  box-sizing:border-box;
+}
 
 body {
   margin:0;
@@ -33,7 +28,9 @@ button {
   border:0;
 }
 
-.hidden { display:none!important; }
+.hidden {
+  display:none!important;
+}
 
 header {
   background:linear-gradient(135deg,#043d2c,#087653);
@@ -54,7 +51,9 @@ header {
   font-weight:900;
 }
 
-.logo span { color:var(--gold); }
+.logo span {
+  color:var(--gold);
+}
 
 .container {
   max-width:1000px;
@@ -134,7 +133,9 @@ input,textarea {
 
 /* DASHBOARD */
 
-.welcome { margin-bottom:20px; }
+.welcome {
+  margin-bottom:20px;
+}
 
 .welcome h2 {
   font-size:24px;
@@ -201,7 +202,9 @@ input,textarea {
   box-shadow:0 3px 12px rgba(0,0,0,.035);
 }
 
-.stat-icon { font-size:23px; }
+.stat-icon {
+  font-size:23px;
+}
 
 .stat-value {
   font-size:20px;
@@ -236,14 +239,18 @@ input,textarea {
   margin-bottom:8px;
 }
 
-.quick-action small { font-weight:bold; }
+.quick-action small {
+  font-weight:bold;
+}
 
 .task {
   padding:16px 0;
   border-bottom:1px solid #eee;
 }
 
-.task:last-child { border:0; }
+.task:last-child {
+  border:0;
+}
 
 .reward {
   color:#a47712;
@@ -257,7 +264,9 @@ input,textarea {
   overflow-wrap:anywhere;
 }
 
-.item:last-child { border:0; }
+.item:last-child {
+  border:0;
+}
 
 /* BOTTOM NAVIGATION */
 
@@ -287,7 +296,9 @@ input,textarea {
   margin-bottom:4px;
 }
 
-.nav-btn.active { color:var(--green); }
+.nav-btn.active {
+  color:var(--green);
+}
 
 /* ADMIN */
 
@@ -306,49 +317,30 @@ footer {
 }
 
 @media(min-width:650px) {
-  .stats { grid-template-columns:repeat(4,1fr); }
-  .container { padding-top:30px; }
+  .stats {
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .container {
+    padding-top:30px;
+  }
 }
-</style>
-</head>
-
-<body>
-
-<header>
+</style></head><body><header>
   <div class="header-inner">
     <div>
       <div class="logo">EARN<span>9JA</span></div>
       <div class="muted" style="color:#d7e9df">
         Task & Rewards Platform
       </div>
-    </div>
+    </div><button onclick="logout()"
+  style="background:#ffffff20;color:white;padding:11px 16px;border-radius:9px">
+  Logout
+</button>
 
-    <button onclick="logout()"
-      style="background:#ffffff20;color:white;padding:11px 16px;border-radius:9px">
-      Logout
-    </button>
   </div>
-</header>
-
-<main class="container">
-
-<div id="message" class="message"></div>
-
-<!-- AUTHENTICATION -->
-
-<section id="auth" class="card auth-card">
-
-<!-- LOGIN -->
-
-<div id="loginForm">
-
-<h2>Welcome Back!</h2>
-
-<p class="muted" style="text-align:center">
+</header><main class="container"><div id="message" class="message"></div><!-- AUTHENTICATION --><section id="auth" class="card auth-card"><div id="loginForm"><h2>Welcome Back!</h2><p class="muted" style="text-align:center">
 Login to your EARN9JA account.
-</p>
-
-<input id="loginEmail"
+</p><input id="loginEmail"
 type="email"
 placeholder="Email address">
 
@@ -362,33 +354,18 @@ onclick="login()">
 LOGIN
 </button>
 
-<button onclick="forgotPassword()"
+<!-- ADDED: FORGOT PASSWORD BUTTON --><button onclick="forgotPassword()"
 style="background:none;color:var(--green);margin-top:15px;width:100%">
 Forgot Password?
 </button>
 
 <p style="text-align:center;margin-top:20px">
 Don't have an account?
-
 <button onclick="showRegister()"
 style="background:none;color:var(--green)">
 Create Account
 </button>
-</p>
-
-</div>
-
-<!-- REGISTRATION -->
-
-<div id="registerForm" class="hidden">
-
-<h2>Create Account</h2>
-
-<input id="name" placeholder="Full name">
-
-<input id="phone" placeholder="Phone number">
-
-<input id="registerEmail"
+</p></div><div id="registerForm" class="hidden"><h2>Create Account</h2><input id="name" placeholder="Full name"><input id="phone" placeholder="Phone number"><input id="registerEmail"
 type="email"
 placeholder="Email address">
 
@@ -404,26 +381,13 @@ CREATE ACCOUNT
 
 <p style="text-align:center;margin-top:20px">
 Already registered?
-
 <button onclick="showLogin()"
 style="background:none;color:var(--green)">
 Login here
 </button>
-</p>
-
-</div>
-
-<!-- RESET PASSWORD -->
-
-<div id="resetPasswordForm" class="hidden">
-
-<h2>Reset Your Password</h2>
-
-<p class="muted" style="text-align:center">
-Create a new password for your account.
-</p>
-
-<input id="newPassword"
+</p></div><!-- ADDED: RESET PASSWORD FORM --><div id="resetPasswordForm" class="hidden"><h2>Reset Your Password</h2><p class="muted" style="text-align:center">
+Create a new password for your EARN9JA account.
+</p><input id="newPassword"
 type="password"
 placeholder="New password (minimum 8 characters)">
 
@@ -437,93 +401,35 @@ onclick="saveNewPassword()">
 UPDATE PASSWORD
 </button>
 
-</div>
-
-</section>
-
-<!-- MEMBER DASHBOARD -->
-
-<section id="dashboard" class="hidden">
-
-<!-- HOME -->
-
-<div id="homePage" class="page">
-
-<div class="welcome">
-<p class="muted">WELCOME BACK</p>
-<h2 id="welcome">Member</h2>
-<p class="muted" id="userEmail"></p>
-</div>
-
-<!-- WALLET -->
-
-<div class="wallet">
-
-<p class="wallet-label">
+</div></section><!-- MEMBER DASHBOARD --><section id="dashboard" class="hidden"><!-- HOME PAGE --><div id="homePage" class="page"><div class="welcome">
+<p class="muted">WELCOME BACK</p><h2 id="welcome">Member</h2><p class="muted" id="userEmail"></p>
+</div><!-- WALLET --><div class="wallet"><p class="wallet-label">
 Available Wallet Balance
-</p>
-
-<div class="wallet-balance" id="balance">
+</p><div class="wallet-balance" id="balance">
 ₦0.00
-</div>
-
-<div class="wallet-actions">
-
-<button onclick="showPage('withdrawPage')">
+</div><div class="wallet-actions"><button onclick="showPage('withdrawPage')">
 Withdraw
-</button>
-
-<button onclick="showPage('historyPage')">
+</button><button onclick="showPage('historyPage')">
 History
-</button>
-
-</div>
-
-<p style="color:#d7e9df;font-size:12px;margin-top:15px">
+</button></div><p style="color:#d7e9df;font-size:12px;margin-top:15px">
 EARN9JA MEMBER WALLET
-</p>
-
-</div>
-
-<!-- STATISTICS -->
-
-<div class="stats">
-
-<div class="stat">
+</p></div><!-- STATISTICS --><div class="stats"><div class="stat">
 <div class="stat-icon">💰</div>
 <div class="stat-value" id="totalEarned">₦0.00</div>
 <div class="stat-label">Total Earned</div>
-</div>
-
-<div class="stat">
+</div><div class="stat">
 <div class="stat-icon">🎯</div>
 <div class="stat-value" id="completedTasks">0</div>
 <div class="stat-label">Completed Tasks</div>
-</div>
-
-<div class="stat">
+</div><div class="stat">
 <div class="stat-icon">👥</div>
 <div class="stat-value">₦0.00</div>
 <div class="stat-label">Referral Bonus*</div>
-</div>
-
-<div class="stat">
+</div><div class="stat">
 <div class="stat-icon">⭐</div>
 <div class="stat-value">Tier 1</div>
 <div class="stat-label">Account Tier</div>
-</div>
-
-</div>
-
-<!-- QUICK ACTIONS -->
-
-<div class="card">
-
-<h2 class="title">Quick Actions</h2>
-
-<div class="quick-actions">
-
-<button class="quick-action"
+</div></div><!-- QUICK ACTIONS --><div class="card"><h2 class="title">Quick Actions</h2><div class="quick-actions"><button class="quick-action"
 onclick="showPage('tasksPage')">
 <span>🎯</span>
 <small>Tasks</small>
@@ -541,186 +447,68 @@ onclick="showPage('referralPage')">
 <small>Invite</small>
 </button>
 
-</div>
-</div>
-
-<div class="card">
-
-<h2 class="title">Welcome to EARN9JA!</h2>
-
-<p class="muted">
+</div></div><div class="card"><h2 class="title">Welcome to EARN9JA!</h2><p class="muted">
 Explore available micro-tasks, submit your work
 and track your rewards.
-</p>
-
-<button class="primary"
+</p><button class="primary"
 onclick="showPage('tasksPage')">
 Explore Available Tasks
 </button>
 
-</div>
-</div>
-
-<!-- TASKS PAGE -->
-
-<div id="tasksPage" class="page hidden">
-
-<div class="card">
-<h2 class="title">🎯 Available Tasks</h2>
-<div id="tasks">Loading tasks...</div>
-</div>
-
-</div>
-
-<!-- HISTORY PAGE -->
-
-<div id="historyPage" class="page hidden">
-
-<div class="card">
-<h2 class="title">💰 Transaction History</h2>
-<div id="transactions">Loading transactions...</div>
-</div>
-
-<div class="card">
-<h2 class="title">📋 My Submissions</h2>
-<div id="mySubmissions">Loading submissions...</div>
-</div>
-
-</div>
-
-<!-- REFERRAL PAGE -->
-
-<div id="referralPage" class="page hidden">
-
-<div class="card">
-
-<h2 class="title">👥 Invite Friends</h2>
-
-<p>Invite friends to discover EARN9JA.</p>
-
-<p class="muted">
+</div></div><!-- TASKS PAGE --><div id="tasksPage" class="page hidden"><div class="card"><h2 class="title">🎯 Available Tasks</h2><div id="tasks">
+Loading tasks...
+</div></div></div><!-- HISTORY PAGE --><div id="historyPage" class="page hidden"><div class="card"><h2 class="title">💰 Transaction History</h2><div id="transactions">
+Loading transactions...
+</div></div><div class="card"><h2 class="title">📋 My Submissions</h2><div id="mySubmissions">
+Loading submissions...
+</div></div></div><!-- REFERRAL PAGE --><div id="referralPage" class="page hidden"><div class="card"><h2 class="title">👥 Invite Friends</h2><p>
+Invite friends to discover EARN9JA.
+</p><p class="muted">
 Your referral tracking and bonus system
 will become active after the referral database
 is configured.
-</p>
-
-<input id="referralLink" readonly>
-
-<button class="primary" onclick="copyReferral()">
+</p><input id="referralLink" readonly><button class="primary" onclick="copyReferral()">
 Copy Invitation Link
-</button>
-
-</div>
-</div>
-
-<!-- WITHDRAW PAGE -->
-
-<div id="withdrawPage" class="page hidden">
-
-<div class="card">
-
-<h2 class="title">💸 Withdraw Funds</h2>
-
-<p class="muted">Your available balance is:</p>
-
-<h2 id="withdrawBalance" style="color:var(--green)">
+</button></div></div><!-- WITHDRAW PAGE --><div id="withdrawPage" class="page hidden"><div class="card"><h2 class="title">💸 Withdraw Funds</h2><p class="muted">
+Your available balance is:
+</p><h2 id="withdrawBalance"
+style="color:var(--green)">
 ₦0.00
-</h2>
-
-<p class="muted">
+</h2><p class="muted">
 Withdrawal processing must be connected
 to a secure server-side payment system.
-</p>
-
-<p style="background:#fff5df;padding:14px;border-radius:10px;color:#886315">
+</p><p style="background:#fff5df;padding:14px;border-radius:10px;color:#886315">
 Withdrawal requests are not enabled yet.
 No money will be transferred from this demo interface.
-</p>
-
-</div>
-</div>
-
-<!-- PROFILE PAGE -->
-
-<div id="profilePage" class="page hidden">
-
-<div class="card">
-
-<h2 class="title">👤 My Profile</h2>
-
-<p class="muted">Full name</p>
-<p id="profileName">Member</p>
-
-<p class="muted">Email address</p>
-<p id="profileEmail"></p>
-
-<p class="muted">Phone number</p>
-<p id="profilePhone">Not provided</p>
-
-<p class="muted">Account type</p>
-<p id="profileRole">Member</p>
-
-<button class="primary" onclick="logout()">
+</p></div></div><!-- PROFILE PAGE --><div id="profilePage" class="page hidden"><div class="card"><h2 class="title">👤 My Profile</h2><p class="muted">Full name</p>
+<p id="profileName">Member</p><p class="muted">Email address</p>
+<p id="profileEmail"></p><p class="muted">Phone number</p>
+<p id="profilePhone">Not provided</p><p class="muted">Account type</p>
+<p id="profileRole">Member</p><button class="primary"
+onclick="logout()">
 Logout
 </button>
 
-</div>
-</div>
-
-<!-- ADMIN PANEL -->
-
-<section id="adminPanel" class="hidden">
-
-<div class="admin-title">
+</div></div><!-- ADMIN PANEL --><section id="adminPanel" class="hidden"><div class="admin-title">
 <h2>Administrator Dashboard</h2>
 <p>Manage EARN9JA</p>
-</div>
-
-<div class="card">
-
-<h2 class="title">Registered Members</h2>
-<div id="users">Loading...</div>
-
-</div>
-
-<div class="card">
-
-<h2 class="title">Create New Task</h2>
-
-<input id="taskTitle" placeholder="Task title">
+</div><div class="card"><h2 class="title">Registered Members</h2><div id="users">Loading...</div></div><div class="card"><h2 class="title">Create New Task</h2><input id="taskTitle"
+placeholder="Task title">
 
 <textarea id="taskDescription"
-placeholder="Task description"></textarea>
-
-<input id="taskReward"
+placeholder="Task description"></textarea><input id="taskReward"
 type="number"
 min="1"
 placeholder="Reward in Naira">
 
-<button class="primary" onclick="createTask()">
+<button class="primary"
+onclick="createTask()">
 Publish Task
 </button>
 
-</div>
-
-<div class="card">
-
-<h2 class="title">Task Submissions</h2>
-<div id="adminSubmissions">Loading...</div>
-
-</div>
-
-</section>
-
-</section>
-
-</main>
-
-<!-- BOTTOM NAVIGATION -->
-
-<nav id="bottomNav" class="bottom-nav hidden">
-
-<button class="nav-btn active"
+</div><div class="card"><h2 class="title">Task Submissions</h2><div id="adminSubmissions">
+Loading...
+</div></div></section></section></main><!-- BOTTOM NAVIGATION --><nav id="bottomNav" class="bottom-nav hidden"><button class="nav-btn active"
 onclick="showPage('homePage',this)">
 <span>🏠</span>Home
 </button>
@@ -745,13 +533,9 @@ onclick="showPage('profilePage',this)">
 <span>👤</span>Profile
 </button>
 
-</nav>
-
-<footer>
+</nav><footer>
 EARN9JA © 2026 | Earn. Complete Tasks. Get Rewarded.
-</footer>
-
-<script>
+</footer><script>
 
 // SUPABASE CONNECTION
 
@@ -761,9 +545,6 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_R4Rpfpob7uVyDXrJp5BDNQ_gjblP8M1";
 
-const RECOVERY_URL =
-"https://earn9ja88.github.io/task-rewards-demo/";
-
 const db = window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
@@ -772,6 +553,7 @@ SUPABASE_KEY
 let currentUser = null;
 let currentProfile = null;
 let currentBalance = 0;
+
 
 // MESSAGE
 
@@ -789,6 +571,7 @@ behavior:"smooth"
 
 }
 
+
 // HTML PROTECTION
 
 function escapeHTML(value) {
@@ -802,6 +585,7 @@ return String(value ?? "").replace(/[&<>"']/g,c => ({
 })[c]);
 
 }
+
 
 // PAGE NAVIGATION
 
@@ -843,6 +627,7 @@ window.scrollTo(0,0);
 
 }
 
+
 // AUTH NAVIGATION
 
 function showRegister() {
@@ -869,13 +654,14 @@ document.getElementById("message").style.display = "none";
 
 }
 
-// FORGOT PASSWORD
+
+// ADDED: FORGOT PASSWORD
 
 async function forgotPassword() {
 
 const email = document.getElementById("loginEmail").value.trim();
 
-if(!email) {
+if (!email) {
 return message("Enter your registered email address first.");
 }
 
@@ -883,13 +669,13 @@ try {
 
 const {error} = await db.auth.resetPasswordForEmail(email, {
 
-redirectTo:RECOVERY_URL
+redirectTo: "https://earn9ja88.github.io/task-rewards-demo/"
 
 });
 
-if(error) throw error;
+if (error) throw error;
 
-message("Password reset link sent. Check your email inbox and spam folder.");
+message("Password reset link sent! Check your email inbox and spam folder.");
 
 } catch(error) {
 
@@ -899,7 +685,8 @@ message("Password recovery failed: " + error.message);
 
 }
 
-// SHOW RESET PASSWORD SCREEN
+
+// ADDED: SHOW RESET PASSWORD SCREEN
 
 function showResetPassword() {
 
@@ -921,7 +708,8 @@ window.scrollTo(0,0);
 
 }
 
-// SAVE NEW PASSWORD
+
+// ADDED: SAVE NEW PASSWORD
 
 async function saveNewPassword() {
 
@@ -972,17 +760,6 @@ button.textContent = "UPDATE PASSWORD";
 
 }
 
-// DETECT PASSWORD RECOVERY
-
-db.auth.onAuthStateChange((event,session) => {
-
-if(event === "PASSWORD_RECOVERY") {
-
-showResetPassword();
-
-}
-
-});
 
 // REGISTER
 
@@ -1016,7 +793,8 @@ password,
 
 options: {
 
-emailRedirectTo:RECOVERY_URL,
+emailRedirectTo:
+"https://earn9ja88.github.io/task-rewards-demo/",
 
 data: {
 full_name:name,
@@ -1055,6 +833,7 @@ button.textContent = "CREATE ACCOUNT";
 }
 
 }
+
 
 // LOGIN
 
@@ -1101,6 +880,7 @@ button.textContent = "LOGIN";
 
 }
 
+
 // LOGOUT
 
 async function logout() {
@@ -1110,6 +890,7 @@ await db.auth.signOut();
 location.reload();
 
 }
+
 
 // LOAD DASHBOARD
 
@@ -1164,7 +945,8 @@ profile.role === "admin" ? "Administrator" : "Registered Member";
 document.getElementById("referralLink").value =
 location.origin + location.pathname + "?ref=" + encodeURIComponent(user.id);
 
-// ADMIN ACCESS
+// Admin access is based on the database profile role.
+// RLS must independently protect all admin operations.
 
 if(profile.role === "admin") {
 
@@ -1173,10 +955,6 @@ document.getElementById("adminPanel").classList.remove("hidden");
 await loadUsers();
 
 await loadAdminSubmissions();
-
-} else {
-
-document.getElementById("adminPanel").classList.add("hidden");
 
 }
 
@@ -1191,6 +969,7 @@ loadTransactions()
 ]);
 
 }
+
 
 // LOAD TASKS
 
@@ -1247,6 +1026,7 @@ Submit Task
 
 }
 
+
 // SUBMIT TASK
 
 async function submitTask(id) {
@@ -1280,6 +1060,7 @@ message("Task submitted successfully for review.");
 await loadMySubmissions();
 
 }
+
 
 // MY SUBMISSIONS
 
@@ -1336,6 +1117,7 @@ Status: ${escapeHTML(s.status)}
 : "No submissions yet.";
 
 }
+
 
 // TRANSACTIONS AND WALLET
 
@@ -1420,6 +1202,7 @@ ${t.transaction_type === "credit" ? "+" : "-"}
 
 }
 
+
 // COPY REFERRAL LINK
 
 async function copyReferral() {
@@ -1441,6 +1224,7 @@ message("Select and copy your invitation link.");
 }
 
 }
+
 
 // ADMIN: MEMBERS
 
@@ -1481,6 +1265,7 @@ box.innerHTML = data.length
 : "No registered members.";
 
 }
+
 
 // ADMIN: CREATE TASK
 
@@ -1533,6 +1318,7 @@ await loadTasks();
 
 }
 
+
 // ADMIN: SUBMISSIONS
 
 async function loadAdminSubmissions() {
@@ -1577,6 +1363,20 @@ box.innerHTML = data.length
 
 }
 
+
+// ADDED: PASSWORD RECOVERY LISTENER
+
+db.auth.onAuthStateChange((event, session) => {
+
+if(event === "PASSWORD_RECOVERY") {
+
+showResetPassword();
+
+}
+
+});
+
+
 // INITIALIZE
 
 async function initialize() {
@@ -1603,7 +1403,5 @@ message("Connection error: " + error.message);
 
 initialize();
 
-</script>
-
-</body>
+</script></body>
 </html>
