@@ -210,66 +210,41 @@ return String(value ?? "").replace(/[&<>"']/g, c => ({
 // REGISTER
 
 async function register() {
-try {
+  try {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-const name = document.getElementById("name").value.trim();
-const phone = document.getElementById("phone").value.trim();
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
+    if (!name || !email || password.length < 8) {
+      return message("Enter your full name, email and a password of at least 8 characters.");
+    }
 
-if (!name || !email || password.length < 8) {
-return message("Enter your name, email and a password of at least 8 characters.");
-}
+    message("Creating your EARN9JA account...");
 
-const {data,error} = await db.auth.signUp({
-email,
-password,
-options: {
-emailRedirectTo: location.origin + location.pathname,
-data: {
-full_name: name,
-phone: phone
-}
-}
-});
+    const { data, error } = await db.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: "https://earn9ja88.github.io/task-rewards-demo/",
+        data: {
+          full_name: name,
+          phone: phone
+        }
+      }
+    });
 
-if (error) throw error;
+    if (error) throw error;
 
-message(
-data.session
-? "Account created successfully. You can now log in."
-: "Registration received! Check your email for verification."
-);
+    message(
+      data.session
+        ? "Your EARN9JA account has been created successfully!"
+        : "Registration successful! Please check your email and confirm your account."
+    );
 
-} catch(error) {
-message("Registration failed: " + error.message);
-}
-}
-
-// LOGIN
-
-async function login() {
-try {
-
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
-
-if (!email || !password) {
-return message("Enter your email and password.");
-}
-
-const {data,error} = await db.auth.signInWithPassword({
-email,
-password
-});
-
-if (error) throw error;
-
-await loadDashboard(data.user);
-
-} catch(error) {
-message("Login failed: " + error.message);
-}
+  } catch (error) {
+    message("Registration failed: " + error.message);
+  }
 }
 
 // LOGOUT
