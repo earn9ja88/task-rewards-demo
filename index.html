@@ -18,9 +18,7 @@
   --muted:#82918a;
 }
 
-* {
-  box-sizing:border-box;
-}
+* { box-sizing:border-box; }
 
 body {
   margin:0;
@@ -35,9 +33,7 @@ button {
   border:0;
 }
 
-.hidden {
-  display:none!important;
-}
+.hidden { display:none!important; }
 
 header {
   background:linear-gradient(135deg,#043d2c,#087653);
@@ -58,9 +54,7 @@ header {
   font-weight:900;
 }
 
-.logo span {
-  color:var(--gold);
-}
+.logo span { color:var(--gold); }
 
 .container {
   max-width:1000px;
@@ -140,9 +134,7 @@ input,textarea {
 
 /* DASHBOARD */
 
-.welcome {
-  margin-bottom:20px;
-}
+.welcome { margin-bottom:20px; }
 
 .welcome h2 {
   font-size:24px;
@@ -209,9 +201,7 @@ input,textarea {
   box-shadow:0 3px 12px rgba(0,0,0,.035);
 }
 
-.stat-icon {
-  font-size:23px;
-}
+.stat-icon { font-size:23px; }
 
 .stat-value {
   font-size:20px;
@@ -246,18 +236,14 @@ input,textarea {
   margin-bottom:8px;
 }
 
-.quick-action small {
-  font-weight:bold;
-}
+.quick-action small { font-weight:bold; }
 
 .task {
   padding:16px 0;
   border-bottom:1px solid #eee;
 }
 
-.task:last-child {
-  border:0;
-}
+.task:last-child { border:0; }
 
 .reward {
   color:#a47712;
@@ -271,9 +257,7 @@ input,textarea {
   overflow-wrap:anywhere;
 }
 
-.item:last-child {
-  border:0;
-}
+.item:last-child { border:0; }
 
 /* BOTTOM NAVIGATION */
 
@@ -303,9 +287,7 @@ input,textarea {
   margin-bottom:4px;
 }
 
-.nav-btn.active {
-  color:var(--green);
-}
+.nav-btn.active { color:var(--green); }
 
 /* ADMIN */
 
@@ -324,13 +306,8 @@ footer {
 }
 
 @media(min-width:650px) {
-  .stats {
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .container {
-    padding-top:30px;
-  }
+  .stats { grid-template-columns:repeat(4,1fr); }
+  .container { padding-top:30px; }
 }
 </style>
 </head>
@@ -361,6 +338,8 @@ footer {
 
 <section id="auth" class="card auth-card">
 
+<!-- LOGIN -->
+
 <div id="loginForm">
 
 <h2>Welcome Back!</h2>
@@ -383,8 +362,14 @@ onclick="login()">
 LOGIN
 </button>
 
+<button onclick="forgotPassword()"
+style="background:none;color:var(--green);margin-top:15px;width:100%">
+Forgot Password?
+</button>
+
 <p style="text-align:center;margin-top:20px">
 Don't have an account?
+
 <button onclick="showRegister()"
 style="background:none;color:var(--green)">
 Create Account
@@ -392,6 +377,8 @@ Create Account
 </p>
 
 </div>
+
+<!-- REGISTRATION -->
 
 <div id="registerForm" class="hidden">
 
@@ -417,11 +404,38 @@ CREATE ACCOUNT
 
 <p style="text-align:center;margin-top:20px">
 Already registered?
+
 <button onclick="showLogin()"
 style="background:none;color:var(--green)">
 Login here
 </button>
 </p>
+
+</div>
+
+<!-- RESET PASSWORD -->
+
+<div id="resetPasswordForm" class="hidden">
+
+<h2>Reset Your Password</h2>
+
+<p class="muted" style="text-align:center">
+Create a new password for your account.
+</p>
+
+<input id="newPassword"
+type="password"
+placeholder="New password (minimum 8 characters)">
+
+<input id="confirmNewPassword"
+type="password"
+placeholder="Confirm new password">
+
+<button id="updatePasswordButton"
+class="primary"
+onclick="saveNewPassword()">
+UPDATE PASSWORD
+</button>
 
 </div>
 
@@ -431,15 +445,13 @@ Login here
 
 <section id="dashboard" class="hidden">
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 
 <div id="homePage" class="page">
 
 <div class="welcome">
 <p class="muted">WELCOME BACK</p>
-
 <h2 id="welcome">Member</h2>
-
 <p class="muted" id="userEmail"></p>
 </div>
 
@@ -530,7 +542,6 @@ onclick="showPage('referralPage')">
 </button>
 
 </div>
-
 </div>
 
 <div class="card">
@@ -548,7 +559,6 @@ Explore Available Tasks
 </button>
 
 </div>
-
 </div>
 
 <!-- TASKS PAGE -->
@@ -556,13 +566,8 @@ Explore Available Tasks
 <div id="tasksPage" class="page hidden">
 
 <div class="card">
-
 <h2 class="title">🎯 Available Tasks</h2>
-
-<div id="tasks">
-Loading tasks...
-</div>
-
+<div id="tasks">Loading tasks...</div>
 </div>
 
 </div>
@@ -572,23 +577,13 @@ Loading tasks...
 <div id="historyPage" class="page hidden">
 
 <div class="card">
-
 <h2 class="title">💰 Transaction History</h2>
-
-<div id="transactions">
-Loading transactions...
-</div>
-
+<div id="transactions">Loading transactions...</div>
 </div>
 
 <div class="card">
-
 <h2 class="title">📋 My Submissions</h2>
-
-<div id="mySubmissions">
-Loading submissions...
-</div>
-
+<div id="mySubmissions">Loading submissions...</div>
 </div>
 
 </div>
@@ -601,9 +596,7 @@ Loading submissions...
 
 <h2 class="title">👥 Invite Friends</h2>
 
-<p>
-Invite friends to discover EARN9JA.
-</p>
+<p>Invite friends to discover EARN9JA.</p>
 
 <p class="muted">
 Your referral tracking and bonus system
@@ -618,7 +611,6 @@ Copy Invitation Link
 </button>
 
 </div>
-
 </div>
 
 <!-- WITHDRAW PAGE -->
@@ -629,12 +621,9 @@ Copy Invitation Link
 
 <h2 class="title">💸 Withdraw Funds</h2>
 
-<p class="muted">
-Your available balance is:
-</p>
+<p class="muted">Your available balance is:</p>
 
-<h2 id="withdrawBalance"
-style="color:var(--green)">
+<h2 id="withdrawBalance" style="color:var(--green)">
 ₦0.00
 </h2>
 
@@ -649,7 +638,6 @@ No money will be transferred from this demo interface.
 </p>
 
 </div>
-
 </div>
 
 <!-- PROFILE PAGE -->
@@ -672,13 +660,11 @@ No money will be transferred from this demo interface.
 <p class="muted">Account type</p>
 <p id="profileRole">Member</p>
 
-<button class="primary"
-onclick="logout()">
+<button class="primary" onclick="logout()">
 Logout
 </button>
 
 </div>
-
 </div>
 
 <!-- ADMIN PANEL -->
@@ -693,7 +679,6 @@ Logout
 <div class="card">
 
 <h2 class="title">Registered Members</h2>
-
 <div id="users">Loading...</div>
 
 </div>
@@ -702,8 +687,7 @@ Logout
 
 <h2 class="title">Create New Task</h2>
 
-<input id="taskTitle"
-placeholder="Task title">
+<input id="taskTitle" placeholder="Task title">
 
 <textarea id="taskDescription"
 placeholder="Task description"></textarea>
@@ -713,8 +697,7 @@ type="number"
 min="1"
 placeholder="Reward in Naira">
 
-<button class="primary"
-onclick="createTask()">
+<button class="primary" onclick="createTask()">
 Publish Task
 </button>
 
@@ -723,10 +706,7 @@ Publish Task
 <div class="card">
 
 <h2 class="title">Task Submissions</h2>
-
-<div id="adminSubmissions">
-Loading...
-</div>
+<div id="adminSubmissions">Loading...</div>
 
 </div>
 
@@ -780,6 +760,9 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_R4Rpfpob7uVyDXrJp5BDNQ_gjblP8M1";
+
+const RECOVERY_URL =
+"https://earn9ja88.github.io/task-rewards-demo/";
 
 const db = window.supabase.createClient(
 SUPABASE_URL,
@@ -866,6 +849,8 @@ function showRegister() {
 
 document.getElementById("loginForm").classList.add("hidden");
 
+document.getElementById("resetPasswordForm").classList.add("hidden");
+
 document.getElementById("registerForm").classList.remove("hidden");
 
 document.getElementById("message").style.display = "none";
@@ -876,11 +861,128 @@ function showLogin() {
 
 document.getElementById("registerForm").classList.add("hidden");
 
+document.getElementById("resetPasswordForm").classList.add("hidden");
+
 document.getElementById("loginForm").classList.remove("hidden");
 
 document.getElementById("message").style.display = "none";
 
 }
+
+// FORGOT PASSWORD
+
+async function forgotPassword() {
+
+const email = document.getElementById("loginEmail").value.trim();
+
+if(!email) {
+return message("Enter your registered email address first.");
+}
+
+try {
+
+const {error} = await db.auth.resetPasswordForEmail(email, {
+
+redirectTo:RECOVERY_URL
+
+});
+
+if(error) throw error;
+
+message("Password reset link sent. Check your email inbox and spam folder.");
+
+} catch(error) {
+
+message("Password recovery failed: " + error.message);
+
+}
+
+}
+
+// SHOW RESET PASSWORD SCREEN
+
+function showResetPassword() {
+
+document.getElementById("auth").classList.remove("hidden");
+
+document.getElementById("dashboard").classList.add("hidden");
+
+document.getElementById("bottomNav").classList.add("hidden");
+
+document.getElementById("loginForm").classList.add("hidden");
+
+document.getElementById("registerForm").classList.add("hidden");
+
+document.getElementById("resetPasswordForm").classList.remove("hidden");
+
+document.getElementById("message").style.display = "none";
+
+window.scrollTo(0,0);
+
+}
+
+// SAVE NEW PASSWORD
+
+async function saveNewPassword() {
+
+const button = document.getElementById("updatePasswordButton");
+
+const password = document.getElementById("newPassword").value;
+
+const confirmPassword = document.getElementById("confirmNewPassword").value;
+
+if(password.length < 8) {
+return message("Password must contain at least 8 characters.");
+}
+
+if(password !== confirmPassword) {
+return message("Passwords do not match.");
+}
+
+try {
+
+button.disabled = true;
+button.textContent = "Updating password...";
+
+const {error} = await db.auth.updateUser({
+password:password
+});
+
+if(error) throw error;
+
+await db.auth.signOut();
+
+document.getElementById("newPassword").value = "";
+document.getElementById("confirmNewPassword").value = "";
+
+showLogin();
+
+message("Password changed successfully! You can now log in with your new password.");
+
+} catch(error) {
+
+message("Password update failed: " + error.message);
+
+} finally {
+
+button.disabled = false;
+button.textContent = "UPDATE PASSWORD";
+
+}
+
+}
+
+// DETECT PASSWORD RECOVERY
+
+db.auth.onAuthStateChange((event,session) => {
+
+if(event === "PASSWORD_RECOVERY") {
+
+showResetPassword();
+
+}
+
+});
 
 // REGISTER
 
@@ -914,8 +1016,7 @@ password,
 
 options: {
 
-emailRedirectTo:
-"https://earn9ja88.github.io/task-rewards-demo/",
+emailRedirectTo:RECOVERY_URL,
 
 data: {
 full_name:name,
@@ -1063,8 +1164,7 @@ profile.role === "admin" ? "Administrator" : "Registered Member";
 document.getElementById("referralLink").value =
 location.origin + location.pathname + "?ref=" + encodeURIComponent(user.id);
 
-// Admin access is based on the database profile role.
-// RLS must independently protect all admin operations.
+// ADMIN ACCESS
 
 if(profile.role === "admin") {
 
@@ -1073,6 +1173,10 @@ document.getElementById("adminPanel").classList.remove("hidden");
 await loadUsers();
 
 await loadAdminSubmissions();
+
+} else {
+
+document.getElementById("adminPanel").classList.add("hidden");
 
 }
 
