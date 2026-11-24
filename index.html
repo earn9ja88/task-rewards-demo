@@ -3,59 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EARN9JA | Rewards Platform</title>
+
+<title>EARN9JA | Earn and Rewards</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-body{font-family:Arial,sans-serif}
-.card{background:white;border:1px solid #e5e7eb;border-radius:16px;padding:18px}
-button{cursor:pointer}
+body {
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+}
+
+button {
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body class="bg-gray-100 text-gray-900">
 
-<header class="bg-emerald-800 text-white p-5">
-<h1 class="text-2xl font-bold">EARN9JA</h1>
-<p class="text-sm text-emerald-100">Earn through verified micro-tasks</p>
+<header class="bg-emerald-800 text-white p-6">
+  <h1 class="text-3xl font-bold">EARN9JA</h1>
+  <p class="text-emerald-100">
+    Earn through verified micro-tasks
+  </p>
 </header>
 
 <main class="max-w-lg mx-auto p-4 space-y-4">
 
-<div id="message" class="hidden bg-emerald-100 text-emerald-900 p-3 rounded-lg"></div>
-
-<!-- AUTHENTICATION -->
-
-<section id="auth" class="card space-y-3">
-<h2 class="text-xl font-bold">Welcome to EARN9JA</h2>
-
-<div id="registerFields">
-<input id="name" placeholder="Full name"
-class="w-full border p-3 rounded-lg mb-2">
-
-<input id="phone" placeholder="Phone number"
-class="w-full border p-3 rounded-lg">
+<div id="message"
+class="hidden p-3 rounded-lg bg-emerald-100 text-emerald-900">
 </div>
 
-<input id="email" type="email" placeholder="Email address"
-class="w-full border p-3 rounded-lg">
+<!-- REGISTRATION AND LOGIN -->
 
-<input id="password" type="password" placeholder="Password"
-class="w-full border p-3 rounded-lg">
+<section id="auth" class="card space-y-3">
 
-<button onclick="register()" id="registerBtn"
+<h2 class="text-2xl font-bold">Welcome to EARN9JA</h2>
+
+<input id="name" placeholder="Full name">
+
+<input id="phone" placeholder="Phone number">
+
+<input id="email" type="email" placeholder="Email address">
+
+<input id="password" type="password"
+placeholder="Password (minimum 8 characters)">
+
+<button onclick="register()"
 class="w-full bg-emerald-700 text-white p-3 rounded-lg font-bold">
 Create Account
 </button>
 
 <button onclick="login()"
-class="w-full border border-emerald-700 text-emerald-800 p-3 rounded-lg">
+class="w-full border border-emerald-700 text-emerald-800 p-3 rounded-lg font-bold">
 Login
 </button>
 
 <p class="text-xs text-gray-500">
-Registration requires email verification.
+New accounts require email verification.
 </p>
+
 </section>
 
 <!-- USER DASHBOARD -->
@@ -63,74 +85,75 @@ Registration requires email verification.
 <section id="dashboard" class="hidden space-y-4">
 
 <div class="card">
-<p class="text-sm text-gray-500">Welcome back</p>
-<h2 id="welcome" class="text-xl font-bold">User</h2>
+<p class="text-gray-500">Welcome back</p>
+<h2 id="welcome" class="text-2xl font-bold"></h2>
 <p id="userEmail" class="text-sm text-gray-500"></p>
-<span id="userRole" class="text-xs text-emerald-700"></span>
+<p id="userRole" class="font-bold text-emerald-700"></p>
 </div>
 
 <div class="card">
-<h3 class="font-bold">Account Overview</h3>
-<p class="text-sm text-gray-500 mt-2">Transaction balance</p>
-<h2 id="balance" class="text-3xl font-bold text-emerald-700">
+<h3 class="font-bold">My Wallet</h3>
+<p id="balance"
+class="text-3xl font-bold text-emerald-700">
 ₦0.00
-</h2>
-<p class="text-xs text-gray-500 mt-2">
-Your displayed balance is calculated from recorded transactions.
 </p>
 </div>
 
-<div class="card space-y-3">
-<h3 class="font-bold text-lg">Available Tasks</h3>
+<div class="card">
+<h3 class="font-bold text-xl mb-3">Available Tasks</h3>
 <div id="tasks">Loading tasks...</div>
 </div>
 
 <div class="card">
-<h3 class="font-bold mb-3">My Task Submissions</h3>
-<div id="mySubmissions">Loading...</div>
+<h3 class="font-bold mb-3">My Submissions</h3>
+<div id="mySubmissions"></div>
 </div>
 
 <div class="card">
 <h3 class="font-bold mb-3">Transaction History</h3>
-<div id="transactions">Loading...</div>
+<div id="transactions"></div>
 </div>
 
-<!-- ADMIN AREA -->
+<!-- ADMIN DASHBOARD -->
 
 <section id="adminPanel" class="hidden space-y-4">
 
-<div class="bg-emerald-900 text-white p-4 rounded-xl">
-<h2 class="text-xl font-bold">Administrator Dashboard</h2>
-<p class="text-sm">EARN9JA management centre</p>
+<div class="bg-emerald-900 text-white p-5 rounded-xl">
+<h2 class="text-2xl font-bold">
+Administrator Dashboard
+</h2>
+<p>Manage your EARN9JA platform</p>
 </div>
 
 <div class="card">
-<h3 class="font-bold mb-3">Registered Users</h3>
-<div id="users">Loading users...</div>
+<h3 class="font-bold mb-3">Registered Members</h3>
+<div id="users"></div>
 </div>
 
 <div class="card space-y-3">
-<h3 class="font-bold">Create New Task</h3>
 
-<input id="taskTitle" placeholder="Task title"
-class="w-full border p-3 rounded-lg">
+<h3 class="font-bold text-xl">Create New Task</h3>
 
-<textarea id="taskDescription" placeholder="Task description"
-class="w-full border p-3 rounded-lg"></textarea>
+<input id="taskTitle" placeholder="Task title">
 
-<input id="taskReward" type="number" min="0"
-placeholder="Reward in Naira"
-class="w-full border p-3 rounded-lg">
+<textarea id="taskDescription"
+placeholder="Task description"></textarea>
+
+<input id="taskReward"
+type="number"
+min="1"
+placeholder="Reward in Naira">
 
 <button onclick="createTask()"
 class="w-full bg-emerald-700 text-white p-3 rounded-lg">
 Publish Task
 </button>
+
 </div>
 
 <div class="card">
 <h3 class="font-bold mb-3">Task Submissions</h3>
-<div id="adminSubmissions">Loading submissions...</div>
+<div id="adminSubmissions"></div>
 </div>
 
 </section>
@@ -144,16 +167,20 @@ Logout
 
 </main>
 
-<footer class="text-center text-xs text-gray-500 p-6">
-EARN9JA © 2026 | Micro-task platform
+<footer class="text-center text-gray-500 text-xs p-6">
+EARN9JA © 2026 | Earn. Complete Tasks. Get Rewarded.
 </footer>
 
 <script>
+
+// SUPABASE CONNECTION
+
 const SUPABASE_URL =
 "https://asvehrxwdwiprwucflyi.supabase.co";
 
+// Replace the placeholder with your publishable key.
 const SUPABASE_KEY =
-"sb_publishable_fsi2QXuydZh_w74vRFGRXw_e9HWicNy";
+"PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE";
 
 const db = window.supabase.createClient(
 SUPABASE_URL,
@@ -163,13 +190,30 @@ SUPABASE_KEY
 let currentUser = null;
 let currentProfile = null;
 
+// NOTIFICATIONS
+
 function message(text) {
-const el = document.getElementById("message");
-el.textContent = text;
-el.classList.remove("hidden");
+const box = document.getElementById("message");
+box.textContent = text;
+box.classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
+function escapeHTML(value) {
+return String(value ?? "").replace(/[&<>"']/g, c => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+})[c]);
+}
+
+// REGISTER
+
 async function register() {
+try {
+
 const name = document.getElementById("name").value.trim();
 const phone = document.getElementById("phone").value.trim();
 const email = document.getElementById("email").value.trim();
@@ -179,11 +223,11 @@ if (!name || !email || password.length < 8) {
 return message("Enter your name, email and a password of at least 8 characters.");
 }
 
-const {error} = await db.auth.signUp({
+const {data,error} = await db.auth.signUp({
 email,
 password,
 options: {
-emailRedirectTo: location.origin,
+emailRedirectTo: location.origin + location.pathname,
 data: {
 full_name: name,
 phone: phone
@@ -191,30 +235,56 @@ phone: phone
 }
 });
 
-if (error) return message(error.message);
+if (error) throw error;
 
-message("Registration successful! Check your email to verify your account.");
+message(
+data.session
+? "Account created successfully. You can now log in."
+: "Registration received! Check your email for verification."
+);
+
+} catch(error) {
+message("Registration failed: " + error.message);
+}
 }
 
+// LOGIN
+
 async function login() {
+try {
+
 const email = document.getElementById("email").value.trim();
 const password = document.getElementById("password").value;
 
+if (!email || !password) {
+return message("Enter your email and password.");
+}
+
 const {data,error} = await db.auth.signInWithPassword({
-email,password
+email,
+password
 });
 
-if (error) return message(error.message);
+if (error) throw error;
 
 await loadDashboard(data.user);
+
+} catch(error) {
+message("Login failed: " + error.message);
 }
+}
+
+// LOGOUT
 
 async function logout() {
 await db.auth.signOut();
 location.reload();
 }
 
+// LOAD DASHBOARD
+
 async function loadDashboard(user) {
+
 currentUser = user;
 
 const {data:profile,error} = await db
@@ -224,34 +294,48 @@ const {data:profile,error} = await db
 .single();
 
 if (error) {
-return message("Could not load your profile: " + error.message);
+message("Profile loading failed: " + error.message);
+return;
 }
 
 currentProfile = profile;
 
 document.getElementById("auth").classList.add("hidden");
-document.getElementById("dashboard").classList.remove("hidden");
+
+document.getElementById("dashboard")
+.classList.remove("hidden");
 
 document.getElementById("welcome").textContent =
 profile.full_name || user.email;
 
-document.getElementById("userEmail").textContent = user.email;
+document.getElementById("userEmail").textContent =
+user.email;
 
 document.getElementById("userRole").textContent =
-profile.role === "admin" ? "Administrator" : "Registered Member";
+profile.role === "admin"
+? "Administrator"
+: "Registered Member";
 
 if (profile.role === "admin") {
-document.getElementById("adminPanel").classList.remove("hidden");
+
+document.getElementById("adminPanel")
+.classList.remove("hidden");
+
 await loadUsers();
 await loadAdminSubmissions();
+
 }
 
 await loadTasks();
-await loadTransactions();
 await loadMySubmissions();
+await loadTransactions();
+
 }
 
+// LOAD TASKS
+
 async function loadTasks() {
+
 const box = document.getElementById("tasks");
 
 const {data,error} = await db
@@ -265,40 +349,293 @@ box.textContent = error.message;
 return;
 }
 
-if (!data.length) {
-box.textContent = "No tasks available at the moment.";
-return;
-}
+box.innerHTML = data.length
+? data.map(task => `
 
-box.innerHTML = data.map(task => `
 <div class="border-b py-3 space-y-2">
-<h4 class="font-bold">${escapeHTML(task.title)}</h4>
-<p class="text-sm text-gray-600">${escapeHTML(task.description || "")}</p>
-<p class="text-emerald-700 font-bold">
+
+<h3 class="font-bold">
+${escapeHTML(task.title)}
+</h3>
+
+<p class="text-sm">
+${escapeHTML(task.description)}
+</p>
+
+<p class="font-bold text-emerald-700">
 Reward: ₦${Number(task.reward).toLocaleString()}
 </p>
-<button onclick="submitTask(${task.id})"
-class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
+
+<button
+onclick="submitTask(${Number(task.id)})"
+class="bg-emerald-700 text-white px-4 py-2 rounded-lg">
 Submit Task
 </button>
+
 </div>
-`).join("");
+
+`).join("")
+: "No tasks available.";
+
 }
 
+// SUBMIT TASK
+
 async function submitTask(id) {
-const proof = prompt("Enter your task completion details or proof:");
+
+const proof = prompt(
+"Enter your task completion details:"
+);
 
 if (!proof || !proof.trim()) return;
 
 const {error} = await db
 .from("task_submissions")
 .insert({
-user_id:currentUser.id,
-task_id:id,
-proof:proof.trim()
+user_id: currentUser.id,
+task_id: id,
+proof: proof.trim()
 });
 
-if (error) return message(error.message);
+if (error) {
+return message(error.message);
+}
 
-message("Task submitted for administrator review.");
+message("Task submitted successfully for review.");
+
 await loadMySubmissions();
+
+}
+
+// MY SUBMISSIONS
+
+async function loadMySubmissions() {
+
+const box = document.getElementById("mySubmissions");
+
+const {data,error} = await db
+.from("task_submissions")
+.select("id,proof,status")
+.eq("user_id",currentUser.id)
+.order("id",{ascending:false});
+
+if (error) {
+box.textContent = error.message;
+return;
+}
+
+box.innerHTML = data.length
+? data.map(s => `
+
+<div class="border-b py-3">
+
+<p>${escapeHTML(s.proof)}</p>
+
+<p class="text-emerald-700 font-bold">
+${escapeHTML(s.status)}
+</p>
+
+</div>
+
+`).join("")
+: "No submissions yet.";
+
+}
+
+// TRANSACTIONS
+
+async function loadTransactions() {
+
+const box = document.getElementById("transactions");
+
+const {data,error} = await db
+.from("transactions")
+.select("*")
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false});
+
+if (error) {
+box.textContent = error.message;
+return;
+}
+
+let balance = 0;
+
+data.forEach(t => {
+balance += t.transaction_type === "credit"
+? Number(t.amount)
+: -Number(t.amount);
+});
+
+document.getElementById("balance").textContent =
+"₦" + balance.toLocaleString("en-NG",{
+minimumFractionDigits:2
+});
+
+box.innerHTML = data.length
+? data.map(t => `
+
+<div class="flex justify-between border-b py-2 text-sm">
+
+<span>${escapeHTML(t.description)}</span>
+
+<strong>
+₦${Number(t.amount).toLocaleString()}
+</strong>
+
+</div>
+
+`).join("")
+: "No transactions yet.";
+
+}
+
+// ADMIN: USERS
+
+async function loadUsers() {
+
+const box = document.getElementById("users");
+
+const {data,error} = await db
+.from("profiles")
+.select("id,full_name,role,created_at")
+.order("created_at",{ascending:false});
+
+if (error) {
+box.textContent = error.message;
+return;
+}
+
+box.innerHTML = data.length
+? data.map(u => `
+
+<div class="border-b py-3">
+
+<strong>${escapeHTML(u.full_name)}</strong>
+
+<p class="text-sm text-emerald-700">
+${escapeHTML(u.role)}
+</p>
+
+</div>
+
+`).join("")
+: "No registered members found.";
+
+}
+
+// ADMIN: CREATE TASK
+
+async function createTask() {
+
+if (currentProfile?.role !== "admin") {
+return message("Administrator access required.");
+}
+
+const title = document.getElementById("taskTitle").value.trim();
+
+const description =
+document.getElementById("taskDescription").value.trim();
+
+const reward =
+Number(document.getElementById("taskReward").value);
+
+if (!title || !description || !Number.isFinite(reward) || reward <= 0) {
+return message("Enter valid task details and reward.");
+}
+
+const {error} = await db
+.from("tasks")
+.insert({
+title,
+description,
+reward,
+status:"active"
+});
+
+if (error) {
+return message(error.message);
+}
+
+message("Task published successfully.");
+
+document.getElementById("taskTitle").value = "";
+document.getElementById("taskDescription").value = "";
+document.getElementById("taskReward").value = "";
+
+await loadTasks();
+
+}
+
+// ADMIN: SUBMISSIONS
+
+async function loadAdminSubmissions() {
+
+const box = document.getElementById("adminSubmissions");
+
+const {data,error} = await db
+.from("task_submissions")
+.select("*")
+.order("id",{ascending:false});
+
+if (error) {
+box.textContent = error.message;
+return;
+}
+
+box.innerHTML = data.length
+? data.map(s => `
+
+<div class="border-b py-3">
+
+<p class="font-bold">
+Submission #${s.id}
+</p>
+
+<p>${escapeHTML(s.proof)}</p>
+
+<p>Status: ${escapeHTML(s.status)}</p>
+
+</div>
+
+`).join("")
+: "No submissions yet.";
+
+}
+
+// INITIALIZE
+
+async function initialize() {
+
+try {
+
+if (
+!SUPABASE_KEY.startsWith("sb_publishable_")
+) {
+throw new Error(
+"Add your Supabase publishable key to the HTML code."
+);
+}
+
+const {data,error} = await db.auth.getSession();
+
+if (error) throw error;
+
+if (data.session) {
+await loadDashboard(data.session.user);
+}
+
+} catch(error) {
+
+message("Connection error: " + error.message);
+
+}
+
+}
+
+initialize();
+
+</script>
+
+</body>
+  </html>
