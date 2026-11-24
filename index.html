@@ -4,164 +4,332 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>EARN9JA | Rewards Platform</title>
+<title>EARN9JA | Earn Rewards</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+:root {
+  --green:#075b42;
+  --dark:#043d2c;
+  --gold:#e9b949;
+  --bg:#f3f7f5;
+  --white:#fff;
+  --muted:#82918a;
+}
+
 * {
-  box-sizing: border-box;
+  box-sizing:border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f7f4;
-  color: #26352e;
-}
-
-:root {
-  --green: #075b42;
-  --dark: #06432f;
-  --gold: #e9b949;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 3px 15px rgba(0,0,0,.05);
-  margin-bottom: 18px;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #dce5df;
-  border-radius: 10px;
-  margin: 7px 0;
-  font-size: 15px;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:#26352e;
 }
 
 button {
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.primary {
-  background: var(--green);
-  color: white;
-  padding: 14px;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.secondary {
-  background: #e8f2ec;
-  color: var(--green);
-  padding: 14px;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 10px;
+  cursor:pointer;
+  font-weight:bold;
+  border:0;
 }
 
 .hidden {
-  display: none !important;
+  display:none!important;
 }
 
 header {
-  background: linear-gradient(135deg, #06432f, #08704e);
-  color: white;
-  padding: 23px;
+  background:linear-gradient(135deg,#043d2c,#087653);
+  color:white;
+  padding:20px;
+}
+
+.header-inner {
+  max-width:1000px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .logo {
-  font-size: 30px;
-  font-weight: 900;
+  font-size:27px;
+  font-weight:900;
 }
 
 .logo span {
-  color: var(--gold);
+  color:var(--gold);
 }
 
 .container {
-  max-width: 850px;
-  margin: auto;
-  padding: 20px 15px 40px;
+  max-width:1000px;
+  margin:auto;
+  padding:20px 15px 110px;
+}
+
+.card {
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:0 4px 18px rgba(0,0,0,.045);
+}
+
+input,textarea {
+  width:100%;
+  padding:14px;
+  border:1px solid #dce5df;
+  border-radius:11px;
+  margin:7px 0;
+  font-size:15px;
+  outline-color:var(--green);
+}
+
+.primary {
+  background:var(--green);
+  color:white;
+  padding:14px;
+  border-radius:11px;
+  width:100%;
+  margin-top:10px;
+}
+
+.secondary {
+  background:#e8f2ec;
+  color:var(--green);
+  padding:13px;
+  border-radius:11px;
+  width:100%;
+  margin-top:10px;
 }
 
 .message {
-  display: none;
-  padding: 14px;
-  border-radius: 10px;
-  background: #e5f5eb;
-  color: #075b42;
-  margin-bottom: 15px;
-  overflow-wrap: anywhere;
+  padding:13px;
+  background:#e5f5eb;
+  color:var(--green);
+  border-radius:10px;
+  margin-bottom:15px;
+  display:none;
+  overflow-wrap:anywhere;
 }
 
-.hero {
-  background: linear-gradient(135deg, #06432f, #08704e);
-  color: white;
-  padding: 25px;
-  border-radius: 18px;
-  margin-bottom: 18px;
+.title {
+  font-size:20px;
+  font-weight:bold;
+  color:var(--green);
+  margin-bottom:15px;
 }
 
-.balance {
-  color: var(--gold);
-  font-size: 35px;
-  font-weight: bold;
-  margin-top: 15px;
+.muted {
+  color:var(--muted);
+  font-size:13px;
 }
 
-.section-title {
-  color: var(--green);
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
+/* AUTH */
+
+.auth-card {
+  max-width:440px;
+  margin:35px auto;
+}
+
+.auth-card h2 {
+  text-align:center;
+  color:var(--green);
+}
+
+/* DASHBOARD */
+
+.welcome {
+  margin-bottom:20px;
+}
+
+.welcome h2 {
+  font-size:24px;
+  margin:5px 0;
+}
+
+.wallet {
+  background:linear-gradient(135deg,#043d2c,#087653);
+  color:white;
+  padding:25px;
+  border-radius:22px;
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+}
+
+.wallet:after {
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(255,255,255,.06);
+  right:-50px;
+  top:-70px;
+}
+
+.wallet-label {
+  color:#d7e9df;
+  font-size:14px;
+}
+
+.wallet-balance {
+  font-size:36px;
+  font-weight:900;
+  color:var(--gold);
+  margin:15px 0;
+}
+
+.wallet-actions {
+  display:flex;
+  gap:10px;
+}
+
+.wallet-actions button {
+  flex:1;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(255,255,255,.15);
+  color:white;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.stat {
+  background:white;
+  padding:17px;
+  border-radius:15px;
+  box-shadow:0 3px 12px rgba(0,0,0,.035);
+}
+
+.stat-icon {
+  font-size:23px;
+}
+
+.stat-value {
+  font-size:20px;
+  font-weight:bold;
+  color:var(--green);
+  margin-top:10px;
+}
+
+.stat-label {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.quick-actions {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.quick-action {
+  background:#f0f7f2;
+  border-radius:14px;
+  padding:17px 5px;
+  text-align:center;
+  color:var(--green);
+}
+
+.quick-action span {
+  display:block;
+  font-size:25px;
+  margin-bottom:8px;
+}
+
+.quick-action small {
+  font-weight:bold;
 }
 
 .task {
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  padding:16px 0;
+  border-bottom:1px solid #eee;
 }
 
 .task:last-child {
-  border: none;
+  border:0;
 }
 
 .reward {
-  color: #a47712;
-  font-weight: bold;
-  margin: 10px 0;
+  color:#a47712;
+  font-weight:bold;
+  margin:10px 0;
 }
 
 .item {
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-  overflow-wrap: anywhere;
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+  overflow-wrap:anywhere;
 }
 
+.item:last-child {
+  border:0;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  box-shadow:0 -3px 15px rgba(0,0,0,.08);
+  display:flex;
+  justify-content:space-around;
+  padding:10px 3px calc(10px + env(safe-area-inset-bottom));
+  z-index:100;
+}
+
+.nav-btn {
+  background:none;
+  color:#89958e;
+  font-size:11px;
+  padding:5px;
+}
+
+.nav-btn span {
+  display:block;
+  font-size:21px;
+  margin-bottom:4px;
+}
+
+.nav-btn.active {
+  color:var(--green);
+}
+
+/* ADMIN */
+
 .admin-title {
-  background: var(--dark);
-  color: white;
-  padding: 20px;
-  border-radius: 14px;
+  background:var(--dark);
+  color:white;
+  padding:20px;
+  border-radius:15px;
 }
 
 footer {
-  text-align: center;
-  color: #78877f;
-  padding: 25px;
-  font-size: 12px;
+  text-align:center;
+  color:var(--muted);
+  padding:20px;
+  font-size:12px;
 }
 
 @media(min-width:650px) {
+  .stats {
+    grid-template-columns:repeat(4,1fr);
+  }
+
   .container {
-    padding-top: 30px;
+    padding-top:30px;
   }
 }
 </style>
@@ -170,11 +338,18 @@ footer {
 <body>
 
 <header>
-  <div style="max-width:850px;margin:auto">
-    <div class="logo">EARN<span>9JA</span></div>
-    <p style="color:#d7e9df">
-      Earn through verified micro-tasks
-    </p>
+  <div class="header-inner">
+    <div>
+      <div class="logo">EARN<span>9JA</span></div>
+      <div class="muted" style="color:#d7e9df">
+        Task & Rewards Platform
+      </div>
+    </div>
+
+    <button onclick="logout()"
+      style="background:#ffffff20;color:white;padding:11px 16px;border-radius:9px">
+      Logout
+    </button>
   </div>
 </header>
 
@@ -182,65 +357,73 @@ footer {
 
 <div id="message" class="message"></div>
 
-<!-- LOGIN AND REGISTRATION -->
+<!-- AUTHENTICATION -->
 
-<section id="auth" class="card">
+<section id="auth" class="card auth-card">
 
-<h2 class="section-title">
-Welcome to EARN9JA
-</h2>
+<div id="loginForm">
 
-<p style="color:#78877f;margin-bottom:15px">
-Your journey to earning rewards starts here.
+<h2>Welcome Back!</h2>
+
+<p class="muted" style="text-align:center">
+Login to your EARN9JA account.
 </p>
 
-<div id="registerFields">
+<input id="loginEmail"
+type="email"
+placeholder="Email address">
 
-<input
-id="name"
-type="text"
-placeholder="Full name"
-autocomplete="name"
->
+<input id="loginPassword"
+type="password"
+placeholder="Password">
 
-<input
-id="phone"
-type="tel"
-placeholder="Phone number"
-autocomplete="tel"
->
+<button id="loginButton"
+class="primary"
+onclick="login()">
+LOGIN
+</button>
+
+<p style="text-align:center;margin-top:20px">
+Don't have an account?
+<button onclick="showRegister()"
+style="background:none;color:var(--green)">
+Create Account
+</button>
+</p>
 
 </div>
 
-<input
-id="email"
-type="email"
-placeholder="Email address"
-autocomplete="email"
->
+<div id="registerForm" class="hidden">
 
-<input
-id="password"
+<h2>Create Account</h2>
+
+<input id="name" placeholder="Full name">
+
+<input id="phone" placeholder="Phone number">
+
+<input id="registerEmail"
+type="email"
+placeholder="Email address">
+
+<input id="registerPassword"
 type="password"
-placeholder="Password (minimum 8 characters)"
-autocomplete="current-password"
->
+placeholder="Password (minimum 8 characters)">
 
 <button id="registerButton"
 class="primary"
 onclick="register()">
-Create Account
+CREATE ACCOUNT
 </button>
 
-<button id="loginButton"
-class="secondary"
-onclick="login()">
-Login to Your Account
+<p style="text-align:center;margin-top:20px">
+Already registered?
+<button onclick="showLogin()"
+style="background:none;color:var(--green)">
+Login here
 </button>
-
-<p style="font-size:12px;color:#78877f;margin-top:15px">
-New accounts require email verification.
 </p>
+
+</div>
 
 </section>
 
@@ -248,39 +431,133 @@ New accounts require email verification.
 
 <section id="dashboard" class="hidden">
 
-<div class="hero">
+<!-- HOME PAGE -->
 
-<p>Welcome back!</p>
+<div id="homePage" class="page">
 
-<h2 id="welcome"
-style="font-size:24px;font-weight:bold;margin-top:8px">
-Member
-</h2>
+<div class="welcome">
+<p class="muted">WELCOME BACK</p>
 
-<p id="userEmail"
-style="margin-top:5px;color:#d7e9df">
+<h2 id="welcome">Member</h2>
+
+<p class="muted" id="userEmail"></p>
+</div>
+
+<!-- WALLET -->
+
+<div class="wallet">
+
+<p class="wallet-label">
+Available Wallet Balance
 </p>
 
-<p style="margin-top:25px">
-My Wallet Balance
-</p>
-
-<div id="balance" class="balance">
+<div class="wallet-balance" id="balance">
 ₦0.00
 </div>
 
-<p id="userRole"
-style="color:#e9b949;margin-top:10px">
-Registered Member
+<div class="wallet-actions">
+
+<button onclick="showPage('withdrawPage')">
+Withdraw
+</button>
+
+<button onclick="showPage('historyPage')">
+History
+</button>
+
+</div>
+
+<p style="color:#d7e9df;font-size:12px;margin-top:15px">
+EARN9JA MEMBER WALLET
 </p>
+
+</div>
+
+<!-- STATISTICS -->
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">💰</div>
+<div class="stat-value" id="totalEarned">₦0.00</div>
+<div class="stat-label">Total Earned</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🎯</div>
+<div class="stat-value" id="completedTasks">0</div>
+<div class="stat-label">Completed Tasks</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">👥</div>
+<div class="stat-value">₦0.00</div>
+<div class="stat-label">Referral Bonus*</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">⭐</div>
+<div class="stat-value">Tier 1</div>
+<div class="stat-label">Account Tier</div>
+</div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+
+<div class="card">
+
+<h2 class="title">Quick Actions</h2>
+
+<div class="quick-actions">
+
+<button class="quick-action"
+onclick="showPage('tasksPage')">
+<span>🎯</span>
+<small>Tasks</small>
+</button>
+
+<button class="quick-action"
+onclick="showPage('withdrawPage')">
+<span>💸</span>
+<small>Withdraw</small>
+</button>
+
+<button class="quick-action"
+onclick="showPage('referralPage')">
+<span>👥</span>
+<small>Invite</small>
+</button>
+
+</div>
 
 </div>
 
 <div class="card">
 
-<h2 class="section-title">
-🎯 Available Tasks
-</h2>
+<h2 class="title">Welcome to EARN9JA!</h2>
+
+<p class="muted">
+Explore available micro-tasks, submit your work
+and track your rewards.
+</p>
+
+<button class="primary"
+onclick="showPage('tasksPage')">
+Explore Available Tasks
+</button>
+
+</div>
+
+</div>
+
+<!-- TASKS PAGE -->
+
+<div id="tasksPage" class="page hidden">
+
+<div class="card">
+
+<h2 class="title">🎯 Available Tasks</h2>
 
 <div id="tasks">
 Loading tasks...
@@ -288,23 +565,15 @@ Loading tasks...
 
 </div>
 
-<div class="card">
-
-<h2 class="section-title">
-📋 My Submissions
-</h2>
-
-<div id="mySubmissions">
-Loading submissions...
 </div>
 
-</div>
+<!-- HISTORY PAGE -->
+
+<div id="historyPage" class="page hidden">
 
 <div class="card">
 
-<h2 class="section-title">
-💰 Transaction History
-</h2>
+<h2 class="title">💰 Transaction History</h2>
 
 <div id="transactions">
 Loading transactions...
@@ -312,53 +581,140 @@ Loading transactions...
 
 </div>
 
-<!-- ADMIN DASHBOARD -->
+<div class="card">
+
+<h2 class="title">📋 My Submissions</h2>
+
+<div id="mySubmissions">
+Loading submissions...
+</div>
+
+</div>
+
+</div>
+
+<!-- REFERRAL PAGE -->
+
+<div id="referralPage" class="page hidden">
+
+<div class="card">
+
+<h2 class="title">👥 Invite Friends</h2>
+
+<p>
+Invite friends to discover EARN9JA.
+</p>
+
+<p class="muted">
+Your referral tracking and bonus system
+will become active after the referral database
+is configured.
+</p>
+
+<input id="referralLink" readonly>
+
+<button class="primary" onclick="copyReferral()">
+Copy Invitation Link
+</button>
+
+</div>
+
+</div>
+
+<!-- WITHDRAW PAGE -->
+
+<div id="withdrawPage" class="page hidden">
+
+<div class="card">
+
+<h2 class="title">💸 Withdraw Funds</h2>
+
+<p class="muted">
+Your available balance is:
+</p>
+
+<h2 id="withdrawBalance"
+style="color:var(--green)">
+₦0.00
+</h2>
+
+<p class="muted">
+Withdrawal processing must be connected
+to a secure server-side payment system.
+</p>
+
+<p style="background:#fff5df;padding:14px;border-radius:10px;color:#886315">
+Withdrawal requests are not enabled yet.
+No money will be transferred from this demo interface.
+</p>
+
+</div>
+
+</div>
+
+<!-- PROFILE PAGE -->
+
+<div id="profilePage" class="page hidden">
+
+<div class="card">
+
+<h2 class="title">👤 My Profile</h2>
+
+<p class="muted">Full name</p>
+<p id="profileName">Member</p>
+
+<p class="muted">Email address</p>
+<p id="profileEmail"></p>
+
+<p class="muted">Phone number</p>
+<p id="profilePhone">Not provided</p>
+
+<p class="muted">Account type</p>
+<p id="profileRole">Member</p>
+
+<button class="primary"
+onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
+<!-- ADMIN PANEL -->
 
 <section id="adminPanel" class="hidden">
 
-<div class="admin-title card">
-<h2 style="font-size:22px;font-weight:bold">
-Administrator Dashboard
-</h2>
+<div class="admin-title">
+<h2>Administrator Dashboard</h2>
 <p>Manage EARN9JA</p>
 </div>
 
 <div class="card">
 
-<h2 class="section-title">
-Registered Members
-</h2>
+<h2 class="title">Registered Members</h2>
 
-<div id="users">
-Loading members...
-</div>
+<div id="users">Loading...</div>
 
 </div>
 
 <div class="card">
 
-<h2 class="section-title">
-Create New Task
-</h2>
+<h2 class="title">Create New Task</h2>
 
-<input
-id="taskTitle"
-placeholder="Task title"
->
+<input id="taskTitle"
+placeholder="Task title">
 
-<textarea
-id="taskDescription"
-placeholder="Task description"
-></textarea>
+<textarea id="taskDescription"
+placeholder="Task description"></textarea>
 
-<input
-id="taskReward"
+<input id="taskReward"
 type="number"
 min="1"
-placeholder="Reward in Naira"
->
+placeholder="Reward in Naira">
 
-<button class="primary" onclick="createTask()">
+<button class="primary"
+onclick="createTask()">
 Publish Task
 </button>
 
@@ -366,27 +722,50 @@ Publish Task
 
 <div class="card">
 
-<h2 class="section-title">
-Task Submissions
-</h2>
+<h2 class="title">Task Submissions</h2>
 
 <div id="adminSubmissions">
-Loading submissions...
+Loading...
 </div>
 
 </div>
 
 </section>
-
-<button class="primary"
-style="background:#c0392b"
-onclick="logout()">
-Logout
-</button>
 
 </section>
 
 </main>
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav id="bottomNav" class="bottom-nav hidden">
+
+<button class="nav-btn active"
+onclick="showPage('homePage',this)">
+<span>🏠</span>Home
+</button>
+
+<button class="nav-btn"
+onclick="showPage('tasksPage',this)">
+<span>🎯</span>Tasks
+</button>
+
+<button class="nav-btn"
+onclick="showPage('historyPage',this)">
+<span>📜</span>History
+</button>
+
+<button class="nav-btn"
+onclick="showPage('referralPage',this)">
+<span>👥</span>Referral
+</button>
+
+<button class="nav-btn"
+onclick="showPage('profilePage',this)">
+<span>👤</span>Profile
+</button>
+
+</nav>
 
 <footer>
 EARN9JA © 2026 | Earn. Complete Tasks. Get Rewarded.
@@ -409,59 +788,121 @@ SUPABASE_KEY
 
 let currentUser = null;
 let currentProfile = null;
+let currentBalance = 0;
 
 // MESSAGE
 
 function message(text) {
+
 const box = document.getElementById("message");
 
 box.textContent = text;
 box.style.display = "block";
 
 window.scrollTo({
-top: 0,
-behavior: "smooth"
+top:0,
+behavior:"smooth"
 });
+
 }
 
 // HTML PROTECTION
 
 function escapeHTML(value) {
-return String(value ?? "").replace(/[&<>"']/g, c => ({
+
+return String(value ?? "").replace(/[&<>"']/g,c => ({
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#39;"
 })[c]);
+
 }
 
-// REGISTRATION
+// PAGE NAVIGATION
+
+function showPage(pageId,button) {
+
+document.querySelectorAll(".page").forEach(page => {
+page.classList.add("hidden");
+});
+
+document.getElementById(pageId).classList.remove("hidden");
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+btn.classList.remove("active");
+});
+
+if(button) {
+button.classList.add("active");
+} else {
+
+const navButtons = document.querySelectorAll(".nav-btn");
+
+const pages = [
+"homePage",
+"tasksPage",
+"historyPage",
+"referralPage",
+"profilePage"
+];
+
+const index = pages.indexOf(pageId);
+
+if(index >= 0 && navButtons[index]) {
+navButtons[index].classList.add("active");
+}
+
+}
+
+window.scrollTo(0,0);
+
+}
+
+// AUTH NAVIGATION
+
+function showRegister() {
+
+document.getElementById("loginForm").classList.add("hidden");
+
+document.getElementById("registerForm").classList.remove("hidden");
+
+document.getElementById("message").style.display = "none";
+
+}
+
+function showLogin() {
+
+document.getElementById("registerForm").classList.add("hidden");
+
+document.getElementById("loginForm").classList.remove("hidden");
+
+document.getElementById("message").style.display = "none";
+
+}
+
+// REGISTER
 
 async function register() {
 
+const button = document.getElementById("registerButton");
+
 try {
 
-const name =
-document.getElementById("name").value.trim();
+const name = document.getElementById("name").value.trim();
 
-const phone =
-document.getElementById("phone").value.trim();
+const phone = document.getElementById("phone").value.trim();
 
-const email =
-document.getElementById("email").value.trim();
+const email = document.getElementById("registerEmail").value.trim();
 
-const password =
-document.getElementById("password").value;
+const password = document.getElementById("registerPassword").value;
 
-if (!name || !email || password.length < 8) {
-return message(
-"Enter your full name, email and a password of at least 8 characters."
-);
+if(!name || !email || password.length < 8) {
+
+return message("Enter your name, email and a password of at least 8 characters.");
+
 }
-
-const button =
-document.getElementById("registerButton");
 
 button.disabled = true;
 button.textContent = "Creating account...";
@@ -477,21 +918,29 @@ emailRedirectTo:
 "https://earn9ja88.github.io/task-rewards-demo/",
 
 data: {
-full_name: name,
-phone: phone
+full_name:name,
+phone:phone
 }
 
 }
 
 });
 
-if (error) throw error;
+if(error) throw error;
 
-message(
-data.session
-? "Account created successfully! You can now continue."
-: "Registration successful! Please check your email to verify your account."
-);
+if(data.session) {
+
+await loadDashboard(data.user);
+
+message("Account created successfully!");
+
+} else {
+
+showLogin();
+
+message("Registration received. Please verify your email before logging in.");
+
+}
 
 } catch(error) {
 
@@ -499,11 +948,8 @@ message("Registration failed: " + error.message);
 
 } finally {
 
-const button =
-document.getElementById("registerButton");
-
 button.disabled = false;
-button.textContent = "Create Account";
+button.textContent = "CREATE ACCOUNT";
 
 }
 
@@ -513,20 +959,19 @@ button.textContent = "Create Account";
 
 async function login() {
 
+const button = document.getElementById("loginButton");
+
 try {
 
-const email =
-document.getElementById("email").value.trim();
+const email = document.getElementById("loginEmail").value.trim();
 
-const password =
-document.getElementById("password").value;
+const password = document.getElementById("loginPassword").value;
 
-if (!email || !password) {
+if(!email || !password) {
+
 return message("Enter your email and password.");
-}
 
-const button =
-document.getElementById("loginButton");
+}
 
 button.disabled = true;
 button.textContent = "Logging in...";
@@ -538,7 +983,7 @@ password
 
 });
 
-if (error) throw error;
+if(error) throw error;
 
 await loadDashboard(data.user);
 
@@ -548,11 +993,8 @@ message("Login failed: " + error.message);
 
 } finally {
 
-const button =
-document.getElementById("loginButton");
-
 button.disabled = false;
-button.textContent = "Login to Your Account";
+button.textContent = "LOGIN";
 
 }
 
@@ -584,7 +1026,7 @@ const {data:profile,error} = await db
 
 .single();
 
-if (error) {
+if(error) {
 
 message("Profile loading failed: " + error.message);
 
@@ -594,11 +1036,11 @@ return;
 
 currentProfile = profile;
 
-document.getElementById("auth")
-.classList.add("hidden");
+document.getElementById("auth").classList.add("hidden");
 
-document.getElementById("dashboard")
-.classList.remove("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+
+document.getElementById("bottomNav").classList.remove("hidden");
 
 document.getElementById("welcome").textContent =
 profile.full_name || user.email;
@@ -606,15 +1048,27 @@ profile.full_name || user.email;
 document.getElementById("userEmail").textContent =
 user.email;
 
-document.getElementById("userRole").textContent =
-profile.role === "admin"
-? "Administrator"
-: "Registered Member";
+document.getElementById("profileName").textContent =
+profile.full_name || "Member";
 
-if (profile.role === "admin") {
+document.getElementById("profileEmail").textContent =
+user.email;
 
-document.getElementById("adminPanel")
-.classList.remove("hidden");
+document.getElementById("profilePhone").textContent =
+profile.phone || user.user_metadata?.phone || "Not provided";
+
+document.getElementById("profileRole").textContent =
+profile.role === "admin" ? "Administrator" : "Registered Member";
+
+document.getElementById("referralLink").value =
+location.origin + location.pathname + "?ref=" + encodeURIComponent(user.id);
+
+// Admin access is based on the database profile role.
+// RLS must independently protect all admin operations.
+
+if(profile.role === "admin") {
+
+document.getElementById("adminPanel").classList.remove("hidden");
 
 await loadUsers();
 
@@ -622,11 +1076,15 @@ await loadAdminSubmissions();
 
 }
 
-await loadTasks();
+showPage("homePage");
 
-await loadMySubmissions();
+await Promise.all([
 
-await loadTransactions();
+loadTasks(),
+loadMySubmissions(),
+loadTransactions()
+
+]);
 
 }
 
@@ -634,8 +1092,7 @@ await loadTransactions();
 
 async function loadTasks() {
 
-const box =
-document.getElementById("tasks");
+const box = document.getElementById("tasks");
 
 const {data,error} = await db
 
@@ -647,9 +1104,9 @@ const {data,error} = await db
 
 .order("created_at",{ascending:false});
 
-if (error) {
+if(error) {
 
-box.textContent = error.message;
+box.textContent = "Unable to load tasks: " + error.message;
 
 return;
 
@@ -673,9 +1130,7 @@ ${escapeHTML(task.description)}
 Reward: ₦${Number(task.reward).toLocaleString("en-NG")}
 </p>
 
-<button
-class="primary"
-style="width:auto"
+<button class="primary"
 onclick="submitTask(${Number(task.id)})">
 Submit Task
 </button>
@@ -684,7 +1139,7 @@ Submit Task
 
 `).join("")
 
-: "No tasks available at the moment.";
+: "No tasks available right now.";
 
 }
 
@@ -692,11 +1147,9 @@ Submit Task
 
 async function submitTask(id) {
 
-const proof = prompt(
-"Enter your task completion details:"
-);
+const proof = prompt("Enter your task completion details:");
 
-if (!proof || !proof.trim()) return;
+if(!proof || !proof.trim()) return;
 
 const {error} = await db
 
@@ -704,19 +1157,17 @@ const {error} = await db
 
 .insert({
 
-user_id: currentUser.id,
+user_id:currentUser.id,
 
-task_id: id,
+task_id:id,
 
-proof: proof.trim()
+proof:proof.trim()
 
 });
 
-if (error) {
+if(error) {
 
-return message(
-"Submission failed: " + error.message
-);
+return message("Submission failed: " + error.message);
 
 }
 
@@ -730,8 +1181,7 @@ await loadMySubmissions();
 
 async function loadMySubmissions() {
 
-const box =
-document.getElementById("mySubmissions");
+const box = document.getElementById("mySubmissions");
 
 const {data,error} = await db
 
@@ -743,13 +1193,21 @@ const {data,error} = await db
 
 .order("id",{ascending:false});
 
-if (error) {
+if(error) {
 
 box.textContent = error.message;
 
 return;
 
 }
+
+const completed = data.filter(s =>
+["approved","completed"].includes(
+String(s.status).toLowerCase()
+)
+).length;
+
+document.getElementById("completedTasks").textContent = completed;
 
 box.innerHTML = data.length
 
@@ -759,11 +1217,11 @@ box.innerHTML = data.length
 
 <strong>Submission #${s.id}</strong>
 
-<p style="margin-top:6px">
+<p style="margin-top:7px">
 ${escapeHTML(s.proof)}
 </p>
 
-<p style="color:#075b42;font-weight:bold;margin-top:6px">
+<p style="color:#075b42;margin-top:7px;font-weight:bold">
 Status: ${escapeHTML(s.status)}
 </p>
 
@@ -775,12 +1233,11 @@ Status: ${escapeHTML(s.status)}
 
 }
 
-// TRANSACTION HISTORY
+// TRANSACTIONS AND WALLET
 
 async function loadTransactions() {
 
-const box =
-document.getElementById("transactions");
+const box = document.getElementById("transactions");
 
 const {data,error} = await db
 
@@ -792,32 +1249,47 @@ const {data,error} = await db
 
 .order("created_at",{ascending:false});
 
-if (error) {
+if(error) {
 
-box.textContent = error.message;
+box.textContent = "Unable to load transactions: " + error.message;
 
 return;
 
 }
 
 let balance = 0;
+let earned = 0;
 
 data.forEach(t => {
 
-balance += t.transaction_type === "credit"
+const amount = Number(t.amount);
 
-? Number(t.amount)
+if(t.transaction_type === "credit") {
 
-: -Number(t.amount);
+balance += amount;
+earned += amount;
+
+} else if(t.transaction_type === "debit") {
+
+balance -= amount;
+
+}
 
 });
 
-document.getElementById("balance").textContent =
+currentBalance = balance;
 
-"₦" + balance.toLocaleString("en-NG",{
-
+const formattedBalance = "₦" + balance.toLocaleString("en-NG",{
 minimumFractionDigits:2
+});
 
+document.getElementById("balance").textContent = formattedBalance;
+
+document.getElementById("withdrawBalance").textContent = formattedBalance;
+
+document.getElementById("totalEarned").textContent =
+"₦" + earned.toLocaleString("en-NG",{
+minimumFractionDigits:2
 });
 
 box.innerHTML = data.length
@@ -826,11 +1298,9 @@ box.innerHTML = data.length
 
 <div class="item">
 
-<strong>
-${escapeHTML(t.description)}
-</strong>
+<strong>${escapeHTML(t.description)}</strong>
 
-<p style="color:#075b42;margin-top:5px">
+<p style="color:${t.transaction_type === "credit" ? "#075b42" : "#c0392b"};margin-top:6px">
 
 ${t.transaction_type === "credit" ? "+" : "-"}
 
@@ -846,12 +1316,33 @@ ${t.transaction_type === "credit" ? "+" : "-"}
 
 }
 
-// ADMIN: REGISTERED MEMBERS
+// COPY REFERRAL LINK
+
+async function copyReferral() {
+
+const input = document.getElementById("referralLink");
+
+try {
+
+await navigator.clipboard.writeText(input.value);
+
+message("Invitation link copied successfully!");
+
+} catch(error) {
+
+input.select();
+
+message("Select and copy your invitation link.");
+
+}
+
+}
+
+// ADMIN: MEMBERS
 
 async function loadUsers() {
 
-const box =
-document.getElementById("users");
+const box = document.getElementById("users");
 
 const {data,error} = await db
 
@@ -861,7 +1352,7 @@ const {data,error} = await db
 
 .order("created_at",{ascending:false});
 
-if (error) {
+if(error) {
 
 box.textContent = error.message;
 
@@ -891,27 +1382,19 @@ box.innerHTML = data.length
 
 async function createTask() {
 
-if (currentProfile?.role !== "admin") {
+if(currentProfile?.role !== "admin") {
 
 return message("Administrator access required.");
 
 }
 
-const title =
-document.getElementById("taskTitle").value.trim();
+const title = document.getElementById("taskTitle").value.trim();
 
-const description =
-document.getElementById("taskDescription").value.trim();
+const description = document.getElementById("taskDescription").value.trim();
 
-const reward =
-Number(document.getElementById("taskReward").value);
+const reward = Number(document.getElementById("taskReward").value);
 
-if (
-!title ||
-!description ||
-!Number.isFinite(reward) ||
-reward <= 0
-) {
+if(!title || !description || !Number.isFinite(reward) || reward <= 0) {
 
 return message("Enter valid task details and reward.");
 
@@ -926,22 +1409,18 @@ const {error} = await db
 title,
 description,
 reward,
-status: "active"
+status:"active"
 
 });
 
-if (error) {
+if(error) {
 
-return message(
-"Task creation failed: " + error.message
-);
+return message("Task creation failed: " + error.message);
 
 }
 
 document.getElementById("taskTitle").value = "";
-
 document.getElementById("taskDescription").value = "";
-
 document.getElementById("taskReward").value = "";
 
 message("Task published successfully.");
@@ -950,12 +1429,11 @@ await loadTasks();
 
 }
 
-// ADMIN: ALL SUBMISSIONS
+// ADMIN: SUBMISSIONS
 
 async function loadAdminSubmissions() {
 
-const box =
-document.getElementById("adminSubmissions");
+const box = document.getElementById("adminSubmissions");
 
 const {data,error} = await db
 
@@ -965,7 +1443,7 @@ const {data,error} = await db
 
 .order("id",{ascending:false});
 
-if (error) {
+if(error) {
 
 box.textContent = error.message;
 
@@ -981,15 +1459,11 @@ box.innerHTML = data.length
 
 <strong>Submission #${s.id}</strong>
 
-<p style="margin-top:6px">
-User ID: ${escapeHTML(s.user_id)}
-</p>
+<p>User ID: ${escapeHTML(s.user_id)}</p>
 
 <p>${escapeHTML(s.proof)}</p>
 
-<p style="color:#075b42">
-Status: ${escapeHTML(s.status)}
-</p>
+<p>Status: ${escapeHTML(s.status)}</p>
 
 </div>
 
@@ -999,7 +1473,7 @@ Status: ${escapeHTML(s.status)}
 
 }
 
-// INITIALIZE WEBSITE
+// INITIALIZE
 
 async function initialize() {
 
@@ -1007,9 +1481,9 @@ try {
 
 const {data,error} = await db.auth.getSession();
 
-if (error) throw error;
+if(error) throw error;
 
-if (data.session) {
+if(data.session) {
 
 await loadDashboard(data.session.user);
 
@@ -1028,4 +1502,4 @@ initialize();
 </script>
 
 </body>
-  </html>
+</html>
