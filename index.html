@@ -3,612 +3,320 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EARN9JA | Earn More</title>
 
-<title>EARN9JA | Earn and Rewards</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+:root {
+  --green:#075b42;
+  --dark:#06432f;
+  --gold:#e9b949;
+  --light:#f4f7f5;
+  --white:#ffffff;
+  --text:#26352e;
+  --muted:#78877f;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
 body {
-  font-family: Arial, sans-serif;
-}
-
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
-}
-
-input, textarea {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #ddd;
-  border-radius: 9px;
+  font-family:Arial,sans-serif;
+  background:var(--light);
+  color:var(--text);
 }
 
 button {
-  cursor: pointer;
+  cursor:pointer;
+  border:0;
+  font-weight:bold;
+}
+
+header {
+  background:linear-gradient(135deg,var(--dark),var(--green));
+  color:white;
+  padding:22px;
+}
+
+.header-inner {
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo {
+  font-size:27px;
+  font-weight:900;
+  color:white;
+}
+
+.logo span {
+  color:var(--gold);
+}
+
+.tagline {
+  font-size:12px;
+  color:#d7e9df;
+  margin-top:5px;
+}
+
+.container {
+  max-width:1100px;
+  margin:auto;
+  padding:22px 15px 100px;
+}
+
+.card {
+  background:white;
+  padding:20px;
+  border-radius:17px;
+  box-shadow:0 4px 18px rgba(0,0,0,.04);
+  border:1px solid #edf0ed;
+}
+
+.space {
+  margin-bottom:18px;
+}
+
+input,textarea {
+  width:100%;
+  padding:14px;
+  border:1px solid #dce5df;
+  border-radius:10px;
+  margin:7px 0;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus,textarea:focus {
+  border-color:var(--green);
+}
+
+textarea {
+  min-height:90px;
+}
+
+.primary {
+  background:var(--green);
+  color:white;
+  padding:14px;
+  border-radius:10px;
+  width:100%;
+  margin-top:10px;
+}
+
+.secondary {
+  background:#e8f2ec;
+  color:var(--green);
+  padding:13px;
+  border-radius:10px;
+  width:100%;
+  margin-top:10px;
+}
+
+.gold {
+  color:var(--gold);
+}
+
+.hidden {
+  display:none !important;
+}
+
+.message {
+  padding:14px;
+  background:#e5f5eb;
+  color:#075b42;
+  border-radius:10px;
+  margin-bottom:15px;
+  display:none;
+  overflow-wrap:anywhere;
+}
+
+.hero {
+  background:linear-gradient(130deg,#06432f,#08704e);
+  border-radius:20px;
+  padding:25px;
+  color:white;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after {
+  content:"₦";
+  position:absolute;
+  right:20px;
+  top:0;
+  font-size:140px;
+  font-weight:bold;
+  color:rgba(255,255,255,.07);
+}
+
+.hero h2 {
+  font-size:23px;
+  margin-bottom:8px;
+}
+
+.hero p {
+  color:#d8e9df;
+  font-size:14px;
+}
+
+.balance {
+  font-size:34px;
+  font-weight:900;
+  margin:18px 0;
+  color:var(--gold);
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:13px;
+  margin-bottom:20px;
+}
+
+.stat {
+  background:white;
+  padding:18px;
+  border-radius:15px;
+  box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.stat small {
+  color:var(--muted);
+}
+
+.stat h3 {
+  font-size:22px;
+  margin-top:9px;
+  color:var(--green);
+}
+
+.section-title {
+  font-size:19px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+.task {
+  border:1px solid #e8eee9;
+  padding:16px;
+  border-radius:13px;
+  margin-bottom:13px;
+}
+
+.task h3 {
+  color:var(--green);
+  margin-bottom:8px;
+}
+
+.reward {
+  color:#a47712;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.task button {
+  background:var(--green);
+  color:white;
+  padding:11px 16px;
+  border-radius:9px;
+}
+
+.item {
+  padding:13px 0;
+  border-bottom:1px solid #edf0ed;
+  overflow-wrap:anywhere;
+}
+
+.item:last-child {
+  border-bottom:0;
+}
+
+.admin-heading {
+  background:var(--dark);
+  color:white;
+  padding:20px;
+  border-radius:15px;
+}
+
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  box-shadow:0 -3px 15px rgba(0,0,0,.08);
+  display:flex;
+  justify-content:space-around;
+  padding:12px 5px;
+  z-index:10;
+}
+
+.bottom-nav button {
+  background:none;
+  color:var(--green);
+  font-size:12px;
+}
+
+footer {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:25px;
+}
+
+@media(min-width:700px) {
+  .stats {
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .auth-card {
+    max-width:450px;
+    margin:35px auto;
+  }
 }
 </style>
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body>
 
-<header class="bg-emerald-800 text-white p-6">
-  <h1 class="text-3xl font-bold">EARN9JA</h1>
-  <p class="text-emerald-100">
-    Earn through verified micro-tasks
-  </p>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="logo">EARN<span>9JA</span></div>
+      <p class="tagline">Earn through verified micro-tasks</p>
+    </div>
+    <div class="gold">★ Rewards</div>
+  </div>
 </header>
 
-<main class="max-w-lg mx-auto p-4 space-y-4">
+<main class="container">
 
-<div id="message"
-class="hidden p-3 rounded-lg bg-emerald-100 text-emerald-900">
-</div>
+<div id="message" class="message"></div>
 
-<!-- REGISTRATION AND LOGIN -->
+<!-- AUTHENTICATION -->
 
-<section id="auth" class="card space-y-3">
+<section id="auth" class="card auth-card space">
 
-<h2 class="text-2xl font-bold">Welcome to EARN9JA</h2>
-
-<input id="name" placeholder="Full name">
-
-<input id="phone" placeholder="Phone number">
-
-<input id="email" type="email" placeholder="Email address">
-
-<input id="password" type="password"
-placeholder="Password (minimum 8 characters)">
-
-<button onclick="register()"
-class="w-full bg-emerald-700 text-white p-3 rounded-lg font-bold">
-Create Account
-</button>
-
-<button onclick="login()"
-class="w-full border border-emerald-700 text-emerald-800 p-3 rounded-lg font-bold">
-Login
-</button>
-
-<p class="text-xs text-gray-500">
-New accounts require email verification.
-</p>
-
-</section>
-
-<!-- USER DASHBOARD -->
-
-<section id="dashboard" class="hidden space-y-4">
-
-<div class="card">
-<p class="text-gray-500">Welcome back</p>
-<h2 id="welcome" class="text-2xl font-bold"></h2>
-<p id="userEmail" class="text-sm text-gray-500"></p>
-<p id="userRole" class="font-bold text-emerald-700"></p>
-</div>
-
-<div class="card">
-<h3 class="font-bold">My Wallet</h3>
-<p id="balance"
-class="text-3xl font-bold text-emerald-700">
-₦0.00
-</p>
-</div>
-
-<div class="card">
-<h3 class="font-bold text-xl mb-3">Available Tasks</h3>
-<div id="tasks">Loading tasks...</div>
-</div>
-
-<div class="card">
-<h3 class="font-bold mb-3">My Submissions</h3>
-<div id="mySubmissions"></div>
-</div>
-
-<div class="card">
-<h3 class="font-bold mb-3">Transaction History</h3>
-<div id="transactions"></div>
-</div>
-
-<!-- ADMIN DASHBOARD -->
-
-<section id="adminPanel" class="hidden space-y-4">
-
-<div class="bg-emerald-900 text-white p-5 rounded-xl">
-<h2 class="text-2xl font-bold">
-Administrator Dashboard
+<h2 style="color:var(--green);margin-bottom:8px">
+Welcome to EARN9JA
 </h2>
-<p>Manage your EARN9JA platform</p>
-</div>
 
-<div class="card">
-<h3 class="font-bold mb-3">Registered Members</h3>
-<div id="users"></div>
-</div>
-
-<div class="card space-y-3">
-
-<h3 class="font-bold text-xl">Create New Task</h3>
-
-<input id="taskTitle" placeholder="Task title">
-
-<textarea id="taskDescription"
-placeholder="Task description"></textarea>
-
-<input id="taskReward"
-type="number"
-min="1"
-placeholder="Reward in Naira">
-
-<button onclick="createTask()"
-class="w-full bg-emerald-700 text-white p-3 rounded-lg">
-Publish Task
-</button>
-
-</div>
-
-<div class="card">
-<h3 class="font-bold mb-3">Task Submissions</h3>
-<div id="adminSubmissions"></div>
-</div>
-
-</section>
-
-<button onclick="logout()"
-class="w-full bg-red-600 text-white p-3 rounded-lg">
-Logout
-</button>
-
-</section>
-
-</main>
-
-<footer class="text-center text-gray-500 text-xs p-6">
-EARN9JA © 2026 | Earn. Complete Tasks. Get Rewarded.
-</footer>
-
-<script>
-
-// SUPABASE CONNECTION
-
-const SUPABASE_URL =
-"https://asvehrxwdwiprwucflyi.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_R4Rpfpob7uVyDXrJp5BDNQ_gjblP8M1";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-let currentUser = null;
-let currentProfile = null;
-
-// NOTIFICATIONS
-
-function message(text) {
-const box = document.getElementById("message");
-box.textContent = text;
-box.classList.remove("hidden");
-window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function escapeHTML(value) {
-return String(value ?? "").replace(/[&<>"']/g, c => ({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-})[c]);
-}
-
-// REGISTER
-
-async function register() {
-  try {
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
-    if (!name || !email || password.length < 8) {
-      return message("Enter your full name, email and a password of at least 8 characters.");
-    }
-
-    message("Creating your EARN9JA account...");
-
-    const { data, error } = await db.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        emailRedirectTo: "https://earn9ja88.github.io/task-rewards-demo/",
-        data: {
-          full_name: name,
-          phone: phone
-        }
-      }
-    });
-
-    if (error) throw error;
-
-    message(
-      data.session
-        ? "Your EARN9JA account has been created successfully!"
-        : "Registration successful! Please check your email and confirm your account."
-    );
-
-  } catch (error) {
-    message("Registration failed: " + error.message);
-  }
-}
-
-// LOGOUT
-
-async function logout() {
-await db.auth.signOut();
-location.reload();
-}
-
-// LOAD DASHBOARD
-
-async function loadDashboard(user) {
-
-currentUser = user;
-
-const {data:profile,error} = await db
-.from("profiles")
-.select("*")
-.eq("id",user.id)
-.single();
-
-if (error) {
-message("Profile loading failed: " + error.message);
-return;
-}
-
-currentProfile = profile;
-
-document.getElementById("auth").classList.add("hidden");
-
-document.getElementById("dashboard")
-.classList.remove("hidden");
-
-document.getElementById("welcome").textContent =
-profile.full_name || user.email;
-
-document.getElementById("userEmail").textContent =
-user.email;
-
-document.getElementById("userRole").textContent =
-profile.role === "admin"
-? "Administrator"
-: "Registered Member";
-
-if (profile.role === "admin") {
-
-document.getElementById("adminPanel")
-.classList.remove("hidden");
-
-await loadUsers();
-await loadAdminSubmissions();
-
-}
-
-await loadTasks();
-await loadMySubmissions();
-await loadTransactions();
-
-}
-
-// LOAD TASKS
-
-async function loadTasks() {
-
-const box = document.getElementById("tasks");
-
-const {data,error} = await db
-.from("tasks")
-.select("*")
-.eq("status","active")
-.order("created_at",{ascending:false});
-
-if (error) {
-box.textContent = error.message;
-return;
-}
-
-box.innerHTML = data.length
-? data.map(task => `
-
-<div class="border-b py-3 space-y-2">
-
-<h3 class="font-bold">
-${escapeHTML(task.title)}
-</h3>
-
-<p class="text-sm">
-${escapeHTML(task.description)}
+<p style="color:var(--muted);margin-bottom:15px">
+Your journey to earning rewards starts here.
 </p>
 
-<p class="font-bold text-emerald-700">
-Reward: ₦${Number(task.reward).toLocaleString()}
-</p>
-
-<button
-onclick="submitTask(${Number(task.id)})"
-class="bg-emerald-700 text-white px-4 py-2 rounded-lg">
-Submit Task
-</button>
-
+<div id="registerFields">
+<input id="name" placeholder="Full name">
+<input id="phone" placeholder="Phone number">
 </div>
 
-`).join("")
-: "No tasks available.";
-
-}
-
-// SUBMIT TASK
-
-async function submitTask(id) {
-
-const proof = prompt(
-"Enter your task completion details:"
-);
-
-if (!proof || !proof.trim()) return;
-
-const {error} = await db
-.from("task_submissions")
-.insert({
-user_id: currentUser.id,
-task_id: id,
-proof: proof.trim()
-});
-
-if (error) {
-return message(error.message);
-}
-
-message("Task submitted successfully for review.");
-
-await loadMySubmissions();
-
-}
-
-// MY SUBMISSIONS
-
-async function loadMySubmissions() {
-
-const box = document.getElementById("mySubmissions");
-
-const {data,error} = await db
-.from("task_submissions")
-.select("id,proof,status")
-.eq("user_id",currentUser.id)
-.order("id",{ascending:false});
-
-if (error) {
-box.textContent = error.message;
-return;
-}
-
-box.innerHTML = data.length
-? data.map(s => `
-
-<div class="border-b py-3">
-
-<p>${escapeHTML(s.proof)}</p>
-
-<p class="text-emerald-700 font-bold">
-${escapeHTML(s.status)}
-</p>
-
-</div>
-
-`).join("")
-: "No submissions yet.";
-
-}
-
-// TRANSACTIONS
-
-async function loadTransactions() {
-
-const box = document.getElementById("transactions");
-
-const {data,error} = await db
-.from("transactions")
-.select("*")
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
-
-if (error) {
-box.textContent = error.message;
-return;
-}
-
-let balance = 0;
-
-data.forEach(t => {
-balance += t.transaction_type === "credit"
-? Number(t.amount)
-: -Number(t.amount);
-});
-
-document.getElementById("balance").textContent =
-"₦" + balance.toLocaleString("en-NG",{
-minimumFractionDigits:2
-});
-
-box.innerHTML = data.length
-? data.map(t => `
-
-<div class="flex justify-between border-b py-2 text-sm">
-
-<span>${escapeHTML(t.description)}</span>
-
-<strong>
-₦${Number(t.amount).toLocaleString()}
-</strong>
-
-</div>
-
-`).join("")
-: "No transactions yet.";
-
-}
-
-// ADMIN: USERS
-
-async function loadUsers() {
-
-const box = document.getElementById("users");
-
-const {data,error} = await db
-.from("profiles")
-.select("id,full_name,role,created_at")
-.order("created_at",{ascending:false});
-
-if (error) {
-box.textContent = error.message;
-return;
-}
-
-box.innerHTML = data.length
-? data.map(u => `
-
-<div class="border-b py-3">
-
-<strong>${escapeHTML(u.full_name)}</strong>
-
-<p class="text-sm text-emerald-700">
-${escapeHTML(u.role)}
-</p>
-
-</div>
-
-`).join("")
-: "No registered members found.";
-
-}
-
-// ADMIN: CREATE TASK
-
-async function createTask() {
-
-if (currentProfile?.role !== "admin") {
-return message("Administrator access required.");
-}
-
-const title = document.getElementById("taskTitle").value.trim();
-
-const description =
-document.getElementById("taskDescription").value.trim();
-
-const reward =
-Number(document.getElementById("taskReward").value);
-
-if (!title || !description || !Number.isFinite(reward) || reward <= 0) {
-return message("Enter valid task details and reward.");
-}
-
-const {error} = await db
-.from("tasks")
-.insert({
-title,
-description,
-reward,
-status:"active"
-});
-
-if (error) {
-return message(error.message);
-}
-
-message("Task published successfully.");
-
-document.getElementById("taskTitle").value = "";
-document.getElementById("taskDescription").value = "";
-document.getElementById("taskReward").value = "";
-
-await loadTasks();
-
-}
-
-// ADMIN: SUBMISSIONS
-
-async function loadAdminSubmissions() {
-
-const box = document.getElementById("adminSubmissions");
-
-const {data,error} = await db
-.from("task_submissions")
-.select("*")
-.order("id",{ascending:false});
-
-if (error) {
-box.textContent = error.message;
-return;
-}
-
-box.innerHTML = data.length
-? data.map(s => `
-
-<div class="border-b py-3">
-
-<p class="font-bold">
-Submission #${s.id}
-</p>
-
-<p>${escapeHTML(s.proof)}</p>
-
-<p>Status: ${escapeHTML(s.status)}</p>
-
-</div>
-
-`).join("")
-: "No submissions yet.";
-
-}
-
-// INITIALIZE
-
-async function initialize() {
-
-try {
-
-if (
-!SUPABASE_KEY.startsWith("sb_publishable_")
-) {
-throw new Error(
-"Add your Supabase publishable key to the HTML code."
-);
-}
-
-const {data,error} = await db.auth.getSession();
-
-if (error) throw error;
-
-if (data.session) {
-await loadDashboard(data.session.user);
-}
-
-} catch(error) {
-
-message("Connection error: " + error.message);
-
-}
-
-}
-
-initialize();
-
-</script>
-
-</body>
-  </html>
+<input id="email" type="email" placeholder
