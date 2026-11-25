@@ -1434,10 +1434,11 @@ async function submitWithdrawal() {
   const walletAddress = document.getElementById("withdrawWalletAddress").value.trim();
 
   if (!Number.isFinite(amount) || amount <= 0) return message("Enter a valid withdrawal amount.");
-  if (method === "usdt_trc20" && !walletAddress) return message("Enter your USDT TRC20 wallet address.");
-  if (method !== "usdt_trc20" && (!accountName || !accountNumber)) return message("Enter your account name and account number.");
-  if (amount > currentBalance) return message("Insufficient wallet balance.");
-  if (!confirm("Submit this withdrawal request?")) return;
+if (amount < 100000) return message("Minimum withdrawal is ₦100,000.");
+if (method === "usdt_trc20" && !walletAddress) return message("Enter your USDT TRC20 wallet address.");
+if (method !== "usdt_trc20" && (!accountName || !accountNumber)) return message("Enter your account name and account number.");
+if (amount > currentBalance) return message("Insufficient wallet balance.");
+if (!confirm("Submit this withdrawal request?")) return;
 
   const { error } = await db.rpc("request_withdrawal", {
     p_amount: amount,
