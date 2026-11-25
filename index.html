@@ -1372,7 +1372,7 @@ const {data,error} = await db
 
 .from("task_submissions")
 
-.select("*")
+.select("*") 
 
 .order("id",{ascending:false});
 
@@ -1389,15 +1389,14 @@ box.innerHTML = data.length
 ? data.map(s => `
 
 <div class="item">
-
 <strong>Submission #${s.id}</strong>
-
 <p>User ID: ${escapeHTML(s.user_id)}</p>
-
 <p>${escapeHTML(s.proof)}</p>
-
 <p>Status: ${escapeHTML(s.status)}</p>
 
+${s.status === "pending" ? `
+<button onclick="approveSubmission(${s.id})">Approve</button>
+` : ""}
 </div>
 
 `).join("")
@@ -1544,7 +1543,23 @@ async function processWithdrawal(id, decision) {
   await loadAdminWithdrawals();
   await loadTransactions();
 }
+async function approveSubmission(id) {
+  if (!confirm("Approve this submission and pay the task reward?")) return;
 
+  const { data, error } = await db.rpc(
+    "approve_task_submission",
+    { p_submission_id: id }
+  );
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert(data);
+  await loadAdminSubmissions();
+  await loadTransactions();
+  }
 // INITIALIZE
 
 async function initialize() {
