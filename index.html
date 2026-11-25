@@ -1014,60 +1014,53 @@ loadMyWithdrawals()
 }
 
 
-// LOAD TASKS
 
+ // LOAD TASKS
 async function loadTasks() {
+  const box = document.getElementById("tasks");
 
-const box = document.getElementById("tasks");
+  const { data, error } = await db
+    .from("tasks")
+    .select("*")
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
 
-const {data,error} = await db
+  if (error) {
+    box.textContent = "Unable to load tasks: " + error.message;
+    return;
+  }
 
-.from("tasks")
+  box.innerHTML = data.length
+    ? data.map(task => {
+        const description = escapeHTML(task.description).replace(
+          /(https?:\/\/[^\s<]+)/g,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#087cff;text-decoration:underline;">$1</a>'
+        );
 
-.select("*")
+        return `
+          <div class="task">
+            <h3 style="font-weight:bold;color:#075b42">
+              ${escapeHTML(task.title)}
+            </h3>
 
-.eq("status","active")
+            <p style="margin-top:8px">
+              ${description}
+            </p>
 
-.order("created_at",{ascending:false});
+            <p class="reward">
+              Reward: ₦${Number(task.reward).toLocaleString("en-NG")}
+            </p>
 
-if(error) {
-
-box.textContent = "Unable to load tasks: " + error.message;
-
-return;
-
+            <button class="primary"
+              onclick="submitTask(${Number(task.id)})">
+              Submit Task
+            </button>
+          </div>
+        `;
+      }).join("")
+    : "No tasks available right now.";
 }
 
-box.innerHTML = data.length
-
-? data.map(task => `
-
-<div class="task">
-
-<h3 style="font-weight:bold;color:#075b42">
-${escapeHTML(task.title)}
-</h3>
-
-<p style="margin-top:8px">
-${escapeHTML(task.description)}
-</p>
-
-<p class="reward">
-Reward: ₦${Number(task.reward).toLocaleString("en-NG")}
-</p>
-
-<button class="primary"
-onclick="submitTask(${Number(task.id)})">
-Submit Task
-</button>
-
-</div>
-
-`).join("")
-
-: "No tasks available right now.";
-
-}
 
 
 
