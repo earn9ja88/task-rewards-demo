@@ -469,18 +469,51 @@ will become active after the referral database
 is configured.
 </p><input id="referralLink" readonly><button class="primary" onclick="copyReferral()">
 Copy Invitation Link
-</button></div></div><!-- WITHDRAW PAGE --><div id="withdrawPage" class="page hidden"><div class="card"><h2 class="title">💸 Withdraw Funds</h2><p class="muted">
-Your available balance is:
-</p><h2 id="withdrawBalance"
-style="color:var(--green)">
-₦0.00
-</h2><p class="muted">
-Withdrawal processing must be connected
-to a secure server-side payment system.
-</p><p style="background:#fff5df;padding:14px;border-radius:10px;color:#886315">
-Withdrawal requests are not enabled yet.
-No money will be transferred from this demo interface.
-</p></div></div><!-- PROFILE PAGE --><div id="profilePage" class="page hidden"><div class="card"><h2 class="title">👤 My Profile</h2><p class="muted">Full name</p>
+</button></div></div><!-- WITHDRAW PAGE -->
+<div id="withdrawPage" class="page hidden">
+  <div class="card">
+    <h2 class="title">💸 Withdraw Funds</h2>
+
+    <p class="muted">Your available balance:</p>
+    <h2 id="withdrawBalance" style="color:var(--green)">₦0.00</h2>
+
+    <label>Withdrawal amount (₦)</label>
+    <input id="withdrawAmount" type="number" min="1" placeholder="Enter amount">
+
+    <label>Withdrawal method</label>
+    <select id="withdrawMethod" onchange="toggleWithdrawalFields()" style="width:100%;padding:14px;border:1px solid #dce5df;border-radius:11px;margin:7px 0;font-size:15px">
+      <option value="opay">OPay</option>
+      <option value="palmpay">PalmPay</option>
+      <option value="usdt_trc20">USDT (TRC20)</option>
+    </select>
+
+    <div id="bankWithdrawalFields">
+      <label>Account name</label>
+      <input id="withdrawAccountName" placeholder="Account holder name">
+
+      <label>OPay / PalmPay phone or account number</label>
+      <input id="withdrawAccountNumber" inputmode="numeric" placeholder="Enter account number">
+    </div>
+
+    <div id="cryptoWithdrawalFields" class="hidden">
+      <label>USDT TRC20 wallet address</label>
+      <input id="withdrawWalletAddress" placeholder="Enter TRC20 wallet address">
+    </div>
+
+    <button class="primary" onclick="submitWithdrawal()">
+      SUBMIT WITHDRAWAL REQUEST
+    </button>
+
+    <p class="muted" style="margin-top:12px">
+      Requests are reviewed by the EARN9JA administrator. Payments are processed manually.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="title">📋 My Withdrawal Requests</h2>
+    <div id="myWithdrawals">Loading requests...</div>
+  </div>
+</div><!-- PROFILE PAGE --><div id="profilePage" class="page hidden"><div class="card"><h2 class="title">👤 My Profile</h2><p class="muted">Full name</p>
 <p id="profileName">Member</p><p class="muted">Email address</p>
 <p id="profileEmail"></p><p class="muted">Phone number</p>
 <p id="profilePhone">Not provided</p><p class="muted">Account type</p>
@@ -508,7 +541,14 @@ Publish Task
 
 </div><div class="card"><h2 class="title">Task Submissions</h2><div id="adminSubmissions">
 Loading...
-</div></div></section></section></main><!-- BOTTOM NAVIGATION --><nav id="bottomNav" class="bottom-nav hidden"><button class="nav-btn active"
+</div></div>
+
+<div class="card">
+  <h2 class="title">Withdrawal Requests</h2>
+  <div id="adminWithdrawals">Loading...</div>
+</div>
+
+</section></section></main><!-- BOTTOM NAVIGATION --><nav id="bottomNav" class="bottom-nav hidden"><button class="nav-btn active"
 onclick="showPage('homePage',this)">
 <span>🏠</span>Home
 </button>
@@ -956,6 +996,8 @@ await loadUsers();
 
 await loadAdminSubmissions();
 
+await loadAdminWithdrawals();
+
 }
 
 showPage("homePage");
@@ -964,7 +1006,8 @@ await Promise.all([
 
 loadTasks(),
 loadMySubmissions(),
-loadTransactions()
+loadTransactions(),
+loadMyWithdrawals()
 
 ]);
 
@@ -1376,6 +1419,131 @@ showResetPassword();
 
 });
 
+// WITHDRAWAL FUNCTIONS
+
+function toggleWithdrawalFields() {
+  const method = document.getElementById("withdrawMethod").value;
+  document.getElementById("bankWithdrawalFields").classList.toggle("hidden", method === "usdt_trc20");
+  document.getElementById("cryptoWithdrawalFields").classList.toggle("hidden", method !== "usdt_trc20");
+}
+
+async function submitWithdrawal() {
+  const amount = Number(document.getElementById("withdrawAmount").value);
+  const method = document.getElementById("withdrawMethod").value;
+  const accountName = document.getElementById("withdrawAccountName").value.trim();
+  const accountNumber = document.getElementById("withdrawAccountNumber").value.trim();
+  const walletAddress = document.getElementById("withdrawWalletAddress").value.trim();
+
+  if (!Number.isFinite(amount) || amount <= 0) return message("Enter a valid withdrawal amount.");
+  if (method === "usdt_trc20" && !walletAddress) return message("Enter your USDT TRC20 wallet address.");
+  if (method !== "usdt_trc20" && (!accountName || !accountNumber)) return message("Enter your account name and account number.");
+  if (amount > currentBalance) return message("Insufficient wallet balance.");
+  if (!confirm("Submit this withdrawal request?")) return;
+
+  const { error } = await db.rpc("request_withdrawal", {
+    p_amount: amount,
+    p_method: method,
+    p_account_name: method === "usdt_trc20" ? null : accountName,
+    p_account_number: method === "usdt_trc20" ? null : accountNumber,
+    p_wallet_address: method === "usdt_trc20" ? walletAddress : null
+  });
+
+  if (error) return message("Withdrawal request failed: " + error.message);
+
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAccountName").value = "";
+  document.getElementById("withdrawAccountNumber").value = "";
+  document.getElementById("withdrawWalletAddress").value = "";
+
+  message("Withdrawal request submitted successfully.");
+  await loadTransactions();
+  await loadMyWithdrawals();
+}
+
+async function loadMyWithdrawals() {
+  const box = document.getElementById("myWithdrawals");
+
+  const { data, error } = await db
+    .from("withdrawal_requests")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
+
+  box.innerHTML = data.length ? data.map(w => `
+    <div class="item">
+      <strong>₦${Number(w.amount).toLocaleString("en-NG")}</strong>
+      <p>Method: ${escapeHTML(w.method)}</p>
+      <p>Status: <strong>${escapeHTML(w.status)}</strong></p>
+      <p class="muted">${new Date(w.created_at).toLocaleString()}</p>
+      ${w.payment_reference ? `<p>Payment reference: ${escapeHTML(w.payment_reference)}</p>` : ""}
+    </div>
+  `).join("") : "You have no withdrawal requests yet.";
+}
+
+async function loadAdminWithdrawals() {
+  const box = document.getElementById("adminWithdrawals");
+  if (!box) return;
+
+  const { data, error } = await db
+    .from("withdrawal_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
+
+  box.innerHTML = data.length ? data.map(w => `
+    <div class="item">
+      <strong>₦${Number(w.amount).toLocaleString("en-NG")}</strong>
+      <p>Member ID: ${escapeHTML(w.user_id)}</p>
+      <p>Method: ${escapeHTML(w.method)}</p>
+      <p>Account name: ${escapeHTML(w.account_name || "Not applicable")}</p>
+      <p>Account number: ${escapeHTML(w.account_number || "Not applicable")}</p>
+      <p>Wallet: ${escapeHTML(w.wallet_address || "Not applicable")}</p>
+      <p>Status: <strong>${escapeHTML(w.status)}</strong></p>
+      ${w.status === "pending" ? `
+        <button class="primary" onclick="processWithdrawal(${Number(w.id)}, 'paid')">MARK AS PAID</button>
+        <button class="secondary" onclick="processWithdrawal(${Number(w.id)}, 'rejected')">REJECT REQUEST</button>
+      ` : ""}
+    </div>
+  `).join("") : "No withdrawal requests yet.";
+}
+
+async function processWithdrawal(id, decision) {
+  if (currentProfile?.role !== "admin") return message("Administrator access required.");
+
+  let reference = null;
+  let note = "";
+
+  if (decision === "paid") {
+    reference = prompt("Enter the payment transaction reference:");
+    if (!reference || !reference.trim()) return message("A payment reference is required.");
+  } else {
+    note = prompt("Reason for rejecting this request (optional):") || "";
+  }
+
+  if (!confirm("Are you sure you want to " + decision + " this request?")) return;
+
+  const { error } = await db.rpc("process_withdrawal_request", {
+    p_withdrawal_id: id,
+    p_decision: decision,
+    p_payment_reference: reference,
+    p_admin_note: note
+  });
+
+  if (error) return message("Could not process request: " + error.message);
+
+    message("Withdrawal request updated successfully.");
+  await loadAdminWithdrawals();
+  await loadTransactions();
+}
 
 // INITIALIZE
 
