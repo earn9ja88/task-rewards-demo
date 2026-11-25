@@ -1070,39 +1070,25 @@ Submit Task
 }
 
 
+
 // SUBMIT TASK
-
 async function submitTask(id) {
+  const { error } = await db
+    .from("task_submissions")
+    .insert({
+      user_id: currentUser.id,
+      task_id: id,
+      proof: "Task completed"
+    });
 
-const proof = prompt("Enter your task completion details:");
+  if (error) {
+    return message("Submission failed: " + error.message);
+  }
 
-if(!proof || !proof.trim()) return;
-
-const {error} = await db
-
-.from("task_submissions")
-
-.insert({
-
-user_id:currentUser.id,
-
-task_id:id,
-
-proof:proof.trim()
-
-});
-
-if(error) {
-
-return message("Submission failed: " + error.message);
-
+  message("Task submitted successfully for review.");
+  await loadMySubmissions();
 }
 
-message("Task submitted successfully for review.");
-
-await loadMySubmissions();
-
-}
 
 
 // MY SUBMISSIONS
